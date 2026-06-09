@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gemini TTS — מחולל סקריפט</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #0f1117;
+    color: #e8e8e8;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    direction: rtl;
+  }
+  .container { max-width: 640px; margin: 0 auto; }
+  h1 { font-size: 20px; font-weight: 600; color: #fff; margin-bottom: 0.25rem; }
+  .subtitle { font-size: 13px; color: #888; margin-bottom: 2rem; }
+
+  .card {
+    background: #1a1d27;
+    border: 1px solid #2a2d3a;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .card-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+  }
+
+  label { display: block; font-size: 13px; color: #aaa; margin-bottom: 5px; }
+  .field { margin-bottom: 1rem; }
+  .field:last-child { margin-bottom: 0; }
+
+  .input-row { display: flex; gap: 6px; }
+  input[type="text"], input[type="password"] {
+    flex: 1;
+    background: #0f1117;
+    border: 1px solid #2a2d3a;
+    border-radius: 8px;
+    color: #e8e8e8;
+    font-size: 13px;
+    font-family: 'Consolas', monospace;
+    padding: 8px 12px;
+    outline: none;
+    transition: border-color 0.15s;
+    direction: ltr;
+    text-align: left;
+  }
+  input:focus { border-color: #4a6cf7; }
+
+  button {
+    background: #1a1d27;
+    border: 1px solid #2a2d3a;
+    border-radius: 8px;
+    color: #e8e8e8;
+    font-size: 13px;
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  button:hover { background: #22263a; border-color: #3a3d52; }
+  button:active { transform: scale(0.98); }
+
+  .btn-primary {
+    background: #4a6cf7;
+    border-color: #4a6cf7;
+    color: #fff;
+    font-weight: 500;
+  }
+  .btn-primary:hover { background: #3a5ce6; border-color: #3a5ce6; }
+
+  .btn-success {
+    background: #1a3a2a;
+    border-color: #2a6a4a;
+    color: #5dca90;
+  }
+  .btn-success:hover { background: #1f4a32; }
+
+  .output-box {
+    background: #0a0c12;
+    border: 1px solid #2a2d3a;
+    border-radius: 8px;
+    padding: 1rem;
+    font-family: 'Consolas', monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    color: #c8d0e8;
+    white-space: pre-wrap;
+    word-break: break-all;
+    direction: ltr;
+    text-align: left;
+    min-height: 56px;
+  }
+  .output-box.placeholder { color: #444; font-style: italic; direction: rtl; text-align: right; font-family: inherit; }
+
+  .actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .actions button { font-size: 12px; padding: 7px 14px; }
+
+  .hint { font-size: 11px; color: #555; margin-top: 5px; }
+  .divider { border: none; border-top: 1px solid #2a2d3a; margin: 1.25rem 0; }
+
+  .badge-ok {
+    display: inline-block;
+    font-size: 11px;
+    background: #1a3a2a;
+    color: #5dca90;
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-right: 6px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Gemini TTS — מחולל סקריפט</h1>
+  <p class="subtitle">הכנס מפתח פעם אחת — הכלי מכניס אותו לסקריפט ולפקודה</p>
+
+  <div class="card">
+    <div class="card-title">מפתח API</div>
+
+    <div class="field">
+      <label>Gemini API Key</label>
+      <div class="input-row">
+        <input type="password" id="api-key" placeholder="AIzaSy..." oninput="sync()" />
+        <button onclick="toggleKey()" id="toggle-btn">הצג</button>
+      </div>
+      <p class="hint">המפתח נשמר רק בדפדפן — לא יוצא לשום מקום</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">הגדרות</div>
+
+    <div class="field">
+      <label>נתיב לתיקיית הפרויקט</label>
+      <input type="text" id="folder" style="width:100%"
+        value="/private/var/mobile/Containers/Shared/AppGroup/AD3A26B6-23EE-48B9-96E0-8F14661D28B4/File Provider Storage/הורדות/Tirgolon-main 22"
+        oninput="sync()" />
+    </div>
+
+    <div class="field">
+      <label>תיקיית פלט לאודיו (יחסי לפרויקט)</label>
+      <input type="text" id="audio-out" style="width:100%" value="./audio" oninput="sync()" />
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">פקודה להרצה</div>
+    <div class="output-box placeholder" id="cmd-box">← הכנס מפתח כדי לייצר פקודה</div>
+    <div class="actions">
+      <button onclick="copyCmd()" id="copy-cmd-btn">העתק פקודה</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">סקריפט JS</div>
+    <p style="font-size:13px; color:#888; margin-bottom:1rem;">
+      קובץ <code style="font-size:12px;color:#aaa">generate_words_audio.js</code> — המפתח כבר בפנים, מוכן להריץ עם <code style="font-size:12px;color:#aaa">node</code>
+    </p>
+    <div class="actions">
+      <button class="btn-primary" onclick="downloadJS()">הורד generate_words_audio.js</button>
+      <button class="btn-success" onclick="downloadWords()">הורד words.json לדוגמה</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function getKey() { return document.getElementById('api-key').value.trim(); }
+function getFolder() { return document.getElementById('folder').value.trim(); }
+function getAudioOut() { return document.getElementById('audio-out').value.trim() || './audio'; }
+
+function sync() {
+  const key = getKey();
+  const folder = getFolder();
+  const box = document.getElementById('cmd-box');
+  if (!key) {
+    box.textContent = '← הכנס מפתח כדי לייצר פקודה';
+    box.classList.add('placeholder');
+    return;
+  }
+  box.classList.remove('placeholder');
+  box.textContent = `export GEMINI_KEY="${key}"\ncd "${folder}" && node generate_words_audio.js`;
+}
+
+function toggleKey() {
+  const el = document.getElementById('api-key');
+  const btn = document.getElementById('toggle-btn');
+  el.type = el.type === 'password' ? 'text' : 'password';
+  btn.textContent = el.type === 'password' ? 'הצג' : 'הסתר';
+}
+
+function copyCmd() {
+  const key = getKey();
+  if (!key) { alert('הכנס מפתח קודם'); return; }
+  const txt = document.getElementById('cmd-box').textContent;
+  navigator.clipboard.writeText(txt).then(() => {
+    const btn = document.getElementById('copy-cmd-btn');
+    const orig = btn.textContent;
+    btn.textContent = '✓ הועתק!';
+    setTimeout(() => btn.textContent = orig, 2000);
+  });
+}
+
+function buildJS() {
+  const key = getKey();
+  const audioOut = getAudioOut();
+  return `const https = require("https");
+const fs = require("fs");
+const path = require("path");
+
+const GEMINI_KEY = "${key || ''}";
+const AUDIO_OUT = "${audioOut}";
+const WORDS_FILE = "./words.json";
+const VOICE = "Zephyr";
+const MODEL = "gemini-2.5-flash-preview-tts";
+
+if (!fs.existsSync(AUDIO_OUT)) fs.mkdirSync(AUDIO_OUT, { recursive: true });
+
+const words = JSON.parse(fs.readFileSync(WORDS_FILE, "utf8"));
+
+async function tts(text, outFile) {
+  return new Promise((resolve, reject) => {
+    const body = JSON.stringify({
+      contents: [{ parts: [{ text }] }],
+      generationConfig: {
+        responseModalities: ["AUDIO"],
+        speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: VOICE } } }
+      }
+    });
+    const opts = {
+      hostname: "generativelanguage.googleapis.com",
+      path: \`/v1beta/models/\${MODEL}:generateContent?key=\${GEMINI_KEY}\`,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Content-Length": Buffer.byteLength(body)
+      }
+    };
+    const req = https.request(opts, res => {
+      let raw = "";
+      res.on("data", d => raw += d);
+      res.on("end", () => {
+        try {
+          const json = JSON.parse(raw);
+          const b64 = json.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+          if (!b64) return reject(new Error("No audio: " + JSON.stringify(json).slice(0, 200)));
+          fs.writeFileSync(outFile, Buffer.from(b64, "base64"));
+          resolve();
+        } catch(e) { reject(e); }
+      });
+    });
+    req.on("error", reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+(async () => {
+  let done = 0, skipped = 0, failed = 0;
+  for (const entry of words) {
+    const word = typeof entry === "string" ? entry : entry.word;
+    const tone = (typeof entry === "object" && entry.tone) ? entry.tone : "happy";
+    const safe = word.replace(/[^\\u0590-\\u05FF\\w]/g, "_");
+    const outFile = path.join(AUDIO_OUT, safe + ".mp3");
+    if (fs.existsSync(outFile)) { skipped++; console.log(\`⏩ קיים: \${word}\`); continue; }
+    const prompt = \`[\${tone}] \${word}\`;
+    try {
+      await tts(prompt, outFile);
+      done++;
+      console.log(\`✓ (\${done}) \${word} [\${tone}]\`);
+      await new Promise(r => setTimeout(r, 500));
+    } catch(e) {
+      failed++;
+      console.error(\`✗ \${word}: \${e.message}\`);
+    }
+  }
+  console.log(\`\\n===========================\`);
+  console.log(\`הוקלטו: \${done} | קיימים: \${skipped} | נכשלו: \${failed}\`);
+})();
+`;
+}
+
+function downloadJS() {
+  const key = getKey();
+  if (!key) { alert('הכנס מפתח קודם'); return; }
+  const blob = new Blob([buildJS()], { type: 'text/javascript' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'generate_words_audio.js';
+  a.click();
+}
+
+function downloadWords() {
+  const sample = [
+    {"word":"אמא","tone":"gentle"},
+    {"word":"אבא","tone":"gentle"},
+    {"word":"כלב","tone":"playful"},
+    {"word":"חתול","tone":"playful"},
+    {"word":"שמש","tone":"wonder"},
+    {"word":"ירח","tone":"wonder"},
+    {"word":"גלידה","tone":"excited"},
+    {"word":"מתנה","tone":"excited"}
+  ];
+  const blob = new Blob([JSON.stringify(sample, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'words.json';
+  a.click();
+}
+</script>
+</body>
+</html>
