@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+פ<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -263,9 +263,8 @@ const SYSTEM_INSTRUCTION = '${sysInstr.replace(/'/g, "\\'")}';
 
 function callGeminiTTS(text, tone) {
   return new Promise((resolve, reject) => {
-    const taggedText = text;
+    const taggedText = SYSTEM_INSTRUCTION ? SYSTEM_INSTRUCTION + ' ' + text : text;
     const body = JSON.stringify({
-      system_instruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
       contents: [{ parts: [{ text: taggedText }] }],
       generationConfig: {
         responseModalities: ['AUDIO'],
