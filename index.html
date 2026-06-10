@@ -66,26 +66,47 @@
   button:active { transform: scale(0.98); }
   .btn-primary { background: #4a6cf7; border-color: #4a6cf7; color: #fff; font-weight: 500; }
   .btn-primary:hover { background: #3a5ce6; border-color: #3a5ce6; }
-  .output-box {
+  .cmd-step {
     background: #0a0c12;
     border: 1px solid #2a2d3a;
     border-radius: 8px;
-    padding: 1rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 8px;
+  }
+  .cmd-label {
+    font-size: 11px;
+    color: #555;
+    margin-bottom: 5px;
+    direction: rtl;
+    text-align: right;
+    font-family: inherit;
+  }
+  .cmd-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .cmd-text {
+    flex: 1;
     font-family: 'Consolas', monospace;
     font-size: 12px;
-    line-height: 1.7;
+    line-height: 1.5;
     color: #c8d0e8;
     white-space: pre-wrap;
     word-break: break-all;
     direction: ltr;
     text-align: left;
-    min-height: 56px;
   }
-  .output-box.placeholder { color: #444; font-style: italic; direction: rtl; text-align: right; font-family: inherit; }
-  .actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-  .actions button { font-size: 12px; padding: 7px 14px; }
+  .cmd-text.placeholder { color: #444; font-style: italic; direction: rtl; text-align: right; font-family: inherit; }
+  .copy-btn { font-size: 11px; padding: 5px 10px; flex-shrink: 0; }
   .hint { font-size: 11px; color: #555; margin-top: 5px; }
   code { font-size: 12px; color: #aaa; font-family: 'Consolas', monospace; }
+  .step-num {
+    font-size: 11px;
+    color: #4a6cf7;
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
 </style>
 </head>
 <body>
@@ -133,11 +154,24 @@
   </div>
 
   <div class="card">
-    <div class="card-title">פקודה להרצה</div>
-    <div class="output-box placeholder" id="cmd-box">← הכנס מפתח כדי לייצר פקודה</div>
-    <div class="actions">
-      <button onclick="copyCmd()" id="copy-cmd-btn">העתק פקודה</button>
+    <div class="card-title">פקודות להרצה — הרץ לפי סדר</div>
+
+    <div class="cmd-step">
+      <div class="step-num">שלב 1 — הגדר מפתח</div>
+      <div class="cmd-row">
+        <div class="cmd-text placeholder" id="cmd1">← הכנס מפתח</div>
+        <button class="copy-btn" onclick="copyStep(1)">העתק</button>
+      </div>
     </div>
+
+    <div class="cmd-step">
+      <div class="step-num">שלב 2 — עבור לתיקייה והרץ</div>
+      <div class="cmd-row">
+        <div class="cmd-text placeholder" id="cmd2">← הכנס מפתח</div>
+        <button class="copy-btn" onclick="copyStep(2)">העתק</button>
+      </div>
+    </div>
+
   </div>
 
   <div class="card">
@@ -145,7 +179,7 @@
     <p style="font-size:13px; color:#888; margin-bottom:1rem;">
       קובץ <code>generate_words_audio.js</code> עם המפתח וכל ההגדרות בפנים — מוכן להריץ עם <code>node</code>
     </p>
-    <div class="actions">
+    <div style="display:flex; gap:8px; flex-wrap:wrap;">
       <button class="btn-primary" onclick="downloadJS()">הורד generate_words_audio.js</button>
     </div>
   </div>
@@ -161,14 +195,19 @@ function getDelay()    { return parseInt(document.getElementById('delay').value)
 
 function sync() {
   const key = getKey();
-  const box = document.getElementById('cmd-box');
+  const c1 = document.getElementById('cmd1');
+  const c2 = document.getElementById('cmd2');
+
   if (!key) {
-    box.textContent = '← הכנס מפתח כדי לייצר פקודה';
-    box.classList.add('placeholder');
+    c1.textContent = '← הכנס מפתח'; c1.classList.add('placeholder');
+    c2.textContent = '← הכנס מפתח'; c2.classList.add('placeholder');
     return;
   }
-  box.classList.remove('placeholder');
-  box.textContent = 'export GEMINI_KEY="' + key + '"\ncd "' + getFolder() + '" && node generate_words_audio.js';
+
+  c1.classList.remove('placeholder');
+  c2.classList.remove('placeholder');
+  c1.textContent = 'export GEMINI_KEY="' + key + '"';
+  c2.textContent = 'cd "' + getFolder() + '" && node generate_words_audio.js';
 }
 
 function toggleKey() {
@@ -178,17 +217,18 @@ function toggleKey() {
   btn.textContent = el.type === 'password' ? 'הצג' : 'הסתר';
 }
 
-function copyCmd() {
+function copyStep(n) {
   if (!getKey()) { alert('הכנס מפתח קודם'); return; }
-  navigator.clipboard.writeText(document.getElementById('cmd-box').textContent).then(() => {
-    const btn = document.getElementById('copy-cmd-btn');
+  const text = document.getElementById('cmd' + n).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btns = document.querySelectorAll('.copy-btn');
+    const btn = btns[n - 1];
     const orig = btn.textContent;
-    btn.textContent = '✓ הועתק!';
-    setTimeout(() => btn.textContent = orig, 2000);
+    btn.textContent = '✓';
+    setTimeout(() => btn.textContent = orig, 1500);
   });
 }
 
-// הסקריפט המקורי המלא — רק 5 שורות הקונפיגורציה מוחלפות דינמית
 function buildJS() {
   const key      = getKey();
   const audioOut = getAudioOut();
@@ -196,7 +236,6 @@ function buildJS() {
   const model    = getModel();
   const delay    = getDelay();
 
-  // הסקריפט המלא כפי שהוא — רק שורות הקונפיג מוחלפות
   const configBlock =
 `const API_KEY    = process.env.GEMINI_KEY || '${key}';
 const OUTPUT_DIR = '${audioOut}';
@@ -219,29 +258,19 @@ ${configBlock}
 function callGeminiTTS(text, tone) {
   return new Promise((resolve, reject) => {
     const taggedText = tone ? '[' + tone + '] ' + text : text;
-
     const body = JSON.stringify({
       contents: [{ parts: [{ text: taggedText }] }],
       generationConfig: {
         responseModalities: ['AUDIO'],
-        speechConfig: {
-          voiceConfig: {
-            prebuiltVoiceConfig: { voiceName: VOICE }
-          }
-        }
+        speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: VOICE } } }
       }
     });
-
     const options = {
       hostname: 'generativelanguage.googleapis.com',
       path: '/v1beta/models/' + MODEL + ':generateContent?key=' + encodeURIComponent(API_KEY),
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(body)
-      }
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
     };
-
     const req = https.request(options, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
@@ -249,14 +278,10 @@ function callGeminiTTS(text, tone) {
         try {
           const json = JSON.parse(data);
           if (json.error) return reject(new Error(json.error.message));
-          const audioB64 = json.candidates[0].content.parts[0].inlineData.data;
-          resolve(audioB64);
-        } catch (e) {
-          reject(new Error('Parse error: ' + data.slice(0, 200)));
-        }
+          resolve(json.candidates[0].content.parts[0].inlineData.data);
+        } catch (e) { reject(new Error('Parse error: ' + data.slice(0, 200))); }
       });
     });
-
     req.on('error', reject);
     req.write(body);
     req.end();
@@ -266,18 +291,12 @@ function callGeminiTTS(text, tone) {
 function addWavHeader(pcmBuffer) {
   const dataSize = pcmBuffer.length;
   const header = Buffer.alloc(44);
-  header.write('RIFF', 0);
-  header.writeUInt32LE(dataSize + 36, 4);
-  header.write('WAVE', 8);
-  header.write('fmt ', 12);
-  header.writeUInt32LE(16, 16);
-  header.writeUInt16LE(1, 20);
-  header.writeUInt16LE(1, 22);
-  header.writeUInt32LE(24000, 24);
-  header.writeUInt32LE(24000 * 2, 28);
-  header.writeUInt16LE(2, 32);
-  header.writeUInt16LE(16, 34);
-  header.write('data', 36);
+  header.write('RIFF', 0); header.writeUInt32LE(dataSize + 36, 4);
+  header.write('WAVE', 8); header.write('fmt ', 12);
+  header.writeUInt32LE(16, 16); header.writeUInt16LE(1, 20);
+  header.writeUInt16LE(1, 22); header.writeUInt32LE(24000, 24);
+  header.writeUInt32LE(24000 * 2, 28); header.writeUInt16LE(2, 32);
+  header.writeUInt16LE(16, 34); header.write('data', 36);
   header.writeUInt32LE(dataSize, 40);
   return Buffer.concat([header, pcmBuffer]);
 }
@@ -286,42 +305,26 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 async function main() {
   if (!API_KEY || API_KEY === 'YOUR_API_KEY_HERE') {
-    console.error('הכנס GEMINI_KEY כ-environment variable');
-    process.exit(1);
+    console.error('הכנס GEMINI_KEY כ-environment variable'); process.exit(1);
   }
-
   if (!fs.existsSync(OUTPUT_DIR)) fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-
   const wordsJson = JSON.parse(fs.readFileSync('./words.json', 'utf8'));
-
   const words = [];
   for (const [letter, items] of Object.entries(wordsJson)) {
     for (const item of items) {
       const cleanWord = item.word.replace(/[\\u05B0-\\u05C7]/g, '');
-      const filename = letter + '_' + cleanWord + '.wav';
-      words.push({ letter, word: item.word, tone: item.tone || 'gentle', filename });
+      words.push({ word: item.word, tone: item.tone || 'happy', filename: letter + '_' + cleanWord + '.wav' });
     }
   }
-
-  console.log('מילים: ' + words.length);
-  console.log('קול: ' + VOICE + ' | פלט: ' + OUTPUT_DIR + '/\\n');
-
+  console.log('מילים: ' + words.length + ' | קול: ' + VOICE);
   let success = 0, failed = 0;
-
   for (let i = 0; i < words.length; i++) {
     const { word, tone, filename } = words[i];
-    const progress = '[' + (i + 1) + '/' + words.length + ']';
+    const progress = '[' + (i+1) + '/' + words.length + ']';
     const filepath = path.join(OUTPUT_DIR, filename);
-
-    if (fs.existsSync(filepath)) {
-      console.log('קיים ' + progress + ': ' + filename);
-      success++;
-      continue;
-    }
-
+    if (fs.existsSync(filepath)) { console.log('קיים ' + progress + ': ' + filename); success++; continue; }
     try {
-      const audioB64 = await callGeminiTTS(word, tone);
-      const pcm = Buffer.from(audioB64, 'base64');
+      const pcm = Buffer.from(await callGeminiTTS(word, tone), 'base64');
       fs.writeFileSync(filepath, addWavHeader(pcm));
       console.log('OK ' + progress + ' [' + tone + '] ' + word);
       success++;
@@ -329,13 +332,9 @@ async function main() {
       console.error('ERR ' + progress + ' ' + word + ' -- ' + err.message);
       failed++;
     }
-
     if (i < words.length - 1) await sleep(DELAY_MS);
   }
-
-  console.log('\\n==============================');
-  console.log('הצליחו: ' + success);
-  console.log('נכשלו:  ' + failed);
+  console.log('\\nהצליחו: ' + success + ' | נכשלו: ' + failed);
   console.log('סיום! ' + OUTPUT_DIR + '/');
 }
 
