@@ -147,9 +147,16 @@
       <label>מודל</label>
       <input type="text" id="model" style="width:100%" value="gemini-3.1-flash-tts-preview" oninput="sync()" />
     </div>
-    <div class="field" style="margin-bottom:0">
+    <div class="field">
       <label>השהייה בין מילים (ms)</label>
       <input type="text" id="delay" style="width:100%" value="10000" oninput="sync()" />
+    </div>
+    <div class="field" style="margin-bottom:0">
+      <label>הוראת סגנון (system instruction)</label>
+      <input type="text" id="system-instruction" style="width:100%;direction:ltr;text-align:left;"
+        value="Speak clearly and naturally. Neutral tone. Do not add emotion or enthusiasm."
+        oninput="sync()" />
+      <p class="hint">יוזרק כ-system_instruction ל-API — שולט על אופי הדיבור</p>
     </div>
   </div>
 
@@ -192,6 +199,7 @@ function getAudioOut() { return document.getElementById('audio-out').value.trim(
 function getVoice()    { return document.getElementById('voice').value.trim() || 'Kore'; }
 function getModel()    { return document.getElementById('model').value.trim() || 'gemini-3.1-flash-tts-preview'; }
 function getDelay()    { return parseInt(document.getElementById('delay').value) || 10000; }
+function getSysInstr() { return document.getElementById('system-instruction').value.trim(); }
 
 function sync() {
   const key = getKey();
@@ -235,6 +243,7 @@ function buildJS() {
   const voice    = getVoice();
   const model    = getModel();
   const delay    = getDelay();
+  const sysInstr = getSysInstr();
 
   return `/**
  * generate_words_audio.js
@@ -250,11 +259,13 @@ const OUTPUT_DIR = '${audioOut}';
 const MODEL      = '${model}';
 const VOICE      = '${voice}';
 const DELAY_MS   = ${delay};
+const SYSTEM_INSTRUCTION = '${sysInstr.replace(/'/g, "\\'")}';
 
 function callGeminiTTS(text, tone) {
   return new Promise((resolve, reject) => {
     const taggedText = text;
     const body = JSON.stringify({
+      system_instruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
       contents: [{ parts: [{ text: taggedText }] }],
       generationConfig: {
         responseModalities: ['AUDIO'],
