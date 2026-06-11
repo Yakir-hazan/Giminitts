@@ -94,7 +94,6 @@
   code { font-size: 12px; color: #aaa; font-family: 'Consolas', monospace; }
   .step-num { font-size: 11px; color: #4a6cf7; font-weight: 600; margin-bottom: 3px; }
 
-  /* תצוגה מקדימה */
   .preview-word-input {
     width: 100%;
     background: #0f1117;
@@ -166,7 +165,7 @@
     <div class="field" style="margin-bottom:0">
       <label>Gemini API Key</label>
       <div class="input-row">
-        <input type="password" id="api-key" placeholder="AIzaSy..." oninput="sync()" />
+        <input type="password" id="api-key" placeholder="AIzaSy..." oninput="onKeyInput()" />
         <button onclick="toggleKey()" id="toggle-btn">הצג</button>
       </div>
       <p class="hint">המפתח נשמר רק בדפדפן — לא יוצא לשום מקום</p>
@@ -253,7 +252,6 @@
 
 </div>
 <script>
-// ---- טונציות ----
 const TONES = [
   { en: 'bright',   he: 'בהיר',    emoji: '☀️' },
   { en: 'yummy',    he: 'טעים',    emoji: '😋' },
@@ -280,7 +278,6 @@ function buildTonesGrid() {
   });
 }
 
-// ---- getters ----
 function getKey()      { return document.getElementById('api-key').value.trim(); }
 function getFolder()   { return document.getElementById('folder').value.trim(); }
 function getAudioOut() { return document.getElementById('audio-out').value.trim() || './audio_words'; }
@@ -288,6 +285,28 @@ function getVoice()    { return document.getElementById('voice').value.trim() ||
 function getModel()    { return document.getElementById('model').value.trim() || 'gemini-3.1-flash-tts-preview'; }
 function getDelay()    { return parseInt(document.getElementById('delay').value) || 10000; }
 function getPreviewWord() { return document.getElementById('preview-word').value.trim(); }
+
+// חילוץ מפתח מתוך curl command אם הודבק
+function extractApiKey(raw) {
+  const match = raw.match(/key=([A-Za-z0-9_\-]+)/);
+  if (match) return match[1];
+  // AIza... ישירות
+  const direct = raw.match(/AIza[A-Za-z0-9_\-]{35,}/);
+  if (direct) return direct[0];
+  return raw;
+}
+
+function onKeyInput() {
+  const el = document.getElementById('api-key');
+  const val = el.value.trim();
+  if (val.includes(' ') || val.includes('curl')) {
+    const extracted = extractApiKey(val);
+    if (extracted !== val) {
+      el.value = extracted;
+    }
+  }
+  sync();
+}
 
 function updatePlayBtn() {
   const btn = document.getElementById('play-btn');
@@ -336,7 +355,6 @@ function copyStep(n) {
   });
 }
 
-// ---- תצוגה מקדימה חיה ----
 async function playPreview() {
   const key = getKey();
   const word = getPreviewWord();
@@ -411,7 +429,6 @@ function addWavHeader(pcm) {
   return buf;
 }
 
-// ---- בניית סקריפט ----
 function buildJS() {
   const key      = getKey();
   const audioOut = getAudioOut();
@@ -421,7 +438,7 @@ function buildJS() {
 
   return `/**
  * generate_words_audio.js
- * מייצר קובצי אודיו ל-words.json עם טונציות
+ * מייצר קובצי אודיו ל-words.json
  * Node 16 — ללא תלויות חיצוניות
  */
 const https = require('https');
@@ -456,7 +473,13 @@ function callGeminiTTS(text, tone) {
       res.on('end', () => {
         try {
           const json = JSON.parse(data);
-          if (json.error) return reject(new Error(json.error.message));
+          if (json.error) {
+            const msg = json.error.message || '';
+            if (msg.toLowerCase().includes('quota')) {
+              return reject(new Error('QUOTA_EXCEEDED: ' + msg));
+            }
+            return reject(new Error(msg));
+          }
           resolve(json.candidates[0].content.parts[0].inlineData.data);
         } catch (e) { reject(new Error('Parse error: ' + data.slice(0, 200))); }
       });
@@ -492,7 +515,7 @@ async function main() {
   for (const [letter, items] of Object.entries(wordsJson)) {
     for (const item of items) {
       const cleanWord = item.word.replace(/[\\u05B0-\\u05C7]/g, '');
-      words.push({ word: item.word, tone: item.tone || 'happy', filename: letter + '_' + cleanWord + '.wav' });
+      words.push({ word: item.word, tone: item.tone || '', filename: letter + '_' + cleanWord + '.wav' });
     }
   }
   console.log('מילים: ' + words.length + ' | קול: ' + VOICE);
@@ -505,9 +528,14 @@ async function main() {
     try {
       const pcm = Buffer.from(await callGeminiTTS(word, tone), 'base64');
       fs.writeFileSync(filepath, addWavHeader(pcm));
-      console.log('OK ' + progress + ' [' + tone + '] ' + word);
+      console.log('OK ' + progress + (tone ? ' [' + tone + ']' : '') + ' ' + word);
       success++;
     } catch (err) {
+      if (err.message.startsWith('QUOTA_EXCEEDED')) {
+        console.error('\\n⛔ Quota חרגת מהמכסה — עצירה. נסה מחר או הוסף billing.');
+        console.error('הצליחו: ' + success + ' | נכשלו: ' + failed);
+        process.exit(1);
+      }
       console.error('ERR ' + progress + ' ' + word + ' -- ' + err.message);
       failed++;
     }
