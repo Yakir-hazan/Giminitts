@@ -1,4 +1,4 @@
-p<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -94,63 +94,6 @@ p<!DOCTYPE html>
   code { font-size: 12px; color: #aaa; font-family: 'Consolas', monospace; }
   .step-num { font-size: 11px; color: #4a6cf7; font-weight: 600; margin-bottom: 3px; }
 
-  .preview-word-input {
-    width: 100%;
-    background: #0f1117;
-    border: 1px solid #2a2d3a;
-    border-radius: 8px;
-    color: #e8e8e8;
-    font-size: 22px;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    padding: 10px 14px;
-    outline: none;
-    direction: rtl;
-    text-align: right;
-    transition: border-color 0.15s;
-    margin-bottom: 1rem;
-  }
-  .preview-word-input:focus { border-color: #4a6cf7; }
-  .tones-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    margin-bottom: 1rem;
-  }
-  .tone-btn {
-    background: #0f1117;
-    border: 2px solid #2a2d3a;
-    border-radius: 10px;
-    padding: 10px 6px;
-    cursor: pointer;
-    transition: all 0.15s;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-  }
-  .tone-btn:hover { border-color: #4a6cf7; background: #161923; }
-  .tone-btn.selected { border-color: #4a6cf7; background: #1a2040; }
-  .tone-btn .tone-emoji { font-size: 22px; line-height: 1; }
-  .tone-btn .tone-name-he { font-size: 13px; color: #e8e8e8; font-weight: 600; }
-  .tone-btn .tone-name-en { font-size: 10px; color: #555; font-family: monospace; }
-  .play-row { display: flex; gap: 10px; align-items: center; }
-  .play-status { font-size: 13px; color: #666; flex: 1; text-align: right; }
-  .play-status.loading { color: #4a6cf7; }
-  .play-status.error { color: #e05555; }
-  .play-status.ok { color: #4dbb88; }
-  .audio-bar {
-    background: #0a0c12;
-    border: 1px solid #2a2d3a;
-    border-radius: 8px;
-    padding: 10px 14px;
-    margin-top: 10px;
-    display: none;
-    align-items: center;
-    gap: 10px;
-  }
-  .audio-bar.visible { display: flex; }
-  .audio-bar audio { flex: 1; height: 36px; }
 </style>
 </head>
 <body>
@@ -169,29 +112,6 @@ p<!DOCTYPE html>
         <button onclick="toggleKey()" id="toggle-btn">הצג</button>
       </div>
       <p class="hint">המפתח נשמר רק בדפדפן — לא יוצא לשום מקום</p>
-    </div>
-  </div>
-
-  <!-- תצוגה מקדימה -->
-  <div class="card">
-    <div class="card-title">🎧 תצוגה מקדימה — בדוק קול וטון</div>
-
-    <div class="field">
-      <label>הקלד מילה בעברית</label>
-      <input type="text" class="preview-word-input" id="preview-word" placeholder="לדוגמה: שמש" />
-    </div>
-
-    <div class="field">
-      <label>בחר טונציה</label>
-      <div class="tones-grid" id="tones-grid"></div>
-    </div>
-
-    <div class="play-row">
-      <button class="btn-green" id="play-btn" onclick="playPreview()" disabled>▶ נגן</button>
-      <span class="play-status" id="play-status">הכנס מפתח ומילה</span>
-    </div>
-    <div class="audio-bar" id="audio-bar">
-      <audio id="audio-player" controls></audio>
     </div>
   </div>
 
@@ -252,40 +172,12 @@ p<!DOCTYPE html>
 
 </div>
 <script>
-const TONES = [
-  { en: 'bright',   he: 'בהיר',    emoji: '☀️' },
-  { en: 'yummy',    he: 'טעים',    emoji: '😋' },
-  { en: 'gentle',   he: 'עדין',    emoji: '🤍' },
-  { en: 'playful',  he: 'שובב',    emoji: '🎉' },
-  { en: 'wonder',   he: 'פליאה',   emoji: '🌟' },
-  { en: 'excited',  he: 'נרגש',    emoji: '🚀' },
-  { en: 'calm',     he: 'שקט',     emoji: '🌙' },
-  { en: 'happy',    he: 'שמח',     emoji: '😊' },
-  { en: '',         he: 'ללא טון', emoji: '🔤' },
-];
-
-let selectedTone = 'bright';
-
-function buildTonesGrid() {
-  const grid = document.getElementById('tones-grid');
-  grid.innerHTML = '';
-  TONES.forEach(t => {
-    const btn = document.createElement('button');
-    btn.className = 'tone-btn' + (t.en === selectedTone ? ' selected' : '');
-    btn.innerHTML = `<span class="tone-emoji">${t.emoji}</span><span class="tone-name-he">${t.he}</span><span class="tone-name-en">${t.en || '—'}</span>`;
-    btn.onclick = () => { selectedTone = t.en; buildTonesGrid(); updatePlayBtn(); };
-    grid.appendChild(btn);
-  });
-}
-
 function getKey()      { return document.getElementById('api-key').value.trim(); }
 function getFolder()   { return document.getElementById('folder').value.trim(); }
 function getAudioOut() { return document.getElementById('audio-out').value.trim() || './audio_words'; }
 function getVoice()    { return document.getElementById('voice').value.trim() || 'Kore'; }
 function getModel()    { return document.getElementById('model').value.trim() || 'gemini-3.1-flash-tts-preview'; }
 function getDelay()    { return parseInt(document.getElementById('delay').value) || 10000; }
-function getPreviewWord() { return document.getElementById('preview-word').value.trim(); }
-
 // חילוץ מפתח מתוך curl command אם הודבק
 function extractApiKey(raw) {
   const match = raw.match(/key=([A-Za-z0-9_\-]+)/);
@@ -308,18 +200,6 @@ function onKeyInput() {
   sync();
 }
 
-function updatePlayBtn() {
-  const btn = document.getElementById('play-btn');
-  const status = document.getElementById('play-status');
-  if (!getKey()) { btn.disabled = true; status.textContent = 'הכנס מפתח'; status.className = 'play-status'; return; }
-  if (!getPreviewWord()) { btn.disabled = true; status.textContent = 'הקלד מילה'; status.className = 'play-status'; return; }
-  btn.disabled = false;
-  status.textContent = 'מוכן לניגון';
-  status.className = 'play-status ok';
-}
-
-document.getElementById('preview-word').addEventListener('input', updatePlayBtn);
-
 function sync() {
   const key = getKey();
   const c1 = document.getElementById('cmd1');
@@ -333,7 +213,6 @@ function sync() {
     c1.textContent = 'export GEMINI_KEY="' + key + '"';
     c2.textContent = 'cd "' + getFolder() + '" && node generate_words_audio.js';
   }
-  updatePlayBtn();
 }
 
 function toggleKey() {
@@ -353,80 +232,6 @@ function copyStep(n) {
     btn.textContent = '✓';
     setTimeout(() => btn.textContent = orig, 1500);
   });
-}
-
-async function playPreview() {
-  const key = getKey();
-  const word = getPreviewWord();
-  if (!key || !word) return;
-
-  const status = document.getElementById('play-status');
-  const playBtn = document.getElementById('play-btn');
-  const audioBar = document.getElementById('audio-bar');
-  const audioPlayer = document.getElementById('audio-player');
-
-  playBtn.disabled = true;
-  status.textContent = 'שולח בקשה...';
-  status.className = 'play-status loading';
-  audioBar.classList.remove('visible');
-
-  const taggedText = selectedTone ? '[' + selectedTone + '] ' + word : word;
-  const voice = getVoice();
-  const model = getModel();
-
-  const body = JSON.stringify({
-    contents: [{ parts: [{ text: taggedText }] }],
-    generationConfig: {
-      responseModalities: ['AUDIO'],
-      speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voice } } }
-    }
-  });
-
-  try {
-    const res = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + encodeURIComponent(key),
-      { method: 'POST', headers: { 'Content-Type': 'application/json' }, body }
-    );
-    const json = await res.json();
-    if (json.error) throw new Error(json.error.message);
-    const b64 = json.candidates[0].content.parts[0].inlineData.data;
-    const pcm = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
-    const wav = addWavHeader(pcm);
-    const blob = new Blob([wav], { type: 'audio/wav' });
-    const url = URL.createObjectURL(blob);
-    audioPlayer.src = url;
-    audioBar.classList.add('visible');
-    audioPlayer.play();
-    status.textContent = '✓ ' + (selectedTone ? '[' + selectedTone + '] ' : '') + word;
-    status.className = 'play-status ok';
-  } catch (e) {
-    status.textContent = 'שגיאה: ' + e.message;
-    status.className = 'play-status error';
-  }
-  playBtn.disabled = false;
-}
-
-function addWavHeader(pcm) {
-  const dataSize = pcm.length;
-  const buf = new ArrayBuffer(44 + dataSize);
-  const view = new DataView(buf);
-  const enc = new TextEncoder();
-  const writeStr = (offset, str) => enc.encode(str).forEach((b, i) => view.setUint8(offset + i, b));
-  writeStr(0, 'RIFF');
-  view.setUint32(4, dataSize + 36, true);
-  writeStr(8, 'WAVE');
-  writeStr(12, 'fmt ');
-  view.setUint32(16, 16, true);
-  view.setUint16(20, 1, true);
-  view.setUint16(22, 1, true);
-  view.setUint32(24, 24000, true);
-  view.setUint32(28, 48000, true);
-  view.setUint16(32, 2, true);
-  view.setUint16(34, 16, true);
-  writeStr(36, 'data');
-  view.setUint32(40, dataSize, true);
-  new Uint8Array(buf).set(pcm, 44);
-  return buf;
 }
 
 function buildJS() {
@@ -558,9 +363,6 @@ function downloadJS() {
   a.click();
 }
 
-// init
-buildTonesGrid();
-updatePlayBtn();
 </script>
 </body>
 </html>
