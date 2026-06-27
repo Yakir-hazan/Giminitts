@@ -166,9 +166,9 @@
 <h2 class="font-display-lg-mobile md:font-display-lg mb-2">מרכז ההורדות הסופי</h2>
 <p class="text-body-lg opacity-90 max-w-xl">כל 214 האיורים המדהימים ב-3D לשימוש בכיתה או בבית. מאורגן לפי סדר הא'-ב'.</p>
 </div>
-<button class="pressable-btn bg-surface-container-lowest text-primary font-headline-md px-10 py-5 rounded-2xl flex items-center gap-3">
+<button class="pressable-btn bg-surface-container-lowest text-primary font-headline-md px-10 py-5 rounded-2xl flex items-center gap-3" onclick="alert('אנא הורידו את האיורים באופן ידני מהרשימה למטה')">
 <span class="material-symbols-outlined">download_for_offline</span>
-            הורד הכל (214 איורים)
+            הורדה ידנית של האיורים
         </button>
 </div>
 <!-- Alphabet Quick Nav -->
@@ -210,7 +210,7 @@
 <img alt="עולם" class="w-full aspect-square object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLurqX3fYk7wD9xxa_PT1VA43IjnUlcGW8ibfpnv-pr-PbfcZB4CjgJCeEoAmgB4DQOUx-DxR6Ko9XE9QNbkrc6Q6qHqXcHaDH2-P1N87oOBtG1-CNsAp1Sx-KZIXeEQbNZzn1HAThvglzDuQvREx5MUMGqgibAdcinwNckLnqQDOtAsSJxtMueFt5Pim6lxOpjpGVi1gs3Y7RbUp6lfYhYIXlfu3lIdBF7AXWU0-NYVuQHoMz7xxa5lrhQ"/>
 <div class="p-4 text-center">
 <span class="font-headline-md block mb-3 text-on-surface">עולם</span>
-<button class="pressable-btn w-full bg-primary text-on-primary py-3 rounded-xl flex items-center justify-center gap-2">
+<button class="download-btn pressable-btn w-full bg-primary text-on-primary py-3 rounded-xl flex items-center justify-center gap-2" data-filename="עולם.jpg" data-url="https://lh3.googleusercontent.com/aida/AP1WRLurqX3fYk7wD9xxa_PT1VA43IjnUlcGW8ibfpnv-pr-PbfcZB4CjgJCeEoAmgB4DQOUx-DxR6Ko9XE9QNbkrc6Q6qHqXcHaDH2-P1N87oOBtG1-CNsAp1Sx-KZIXeEQbNZzn1HAThvglzDuQvREx5MUMGqgibAdcinwNckLnqQDOtAsSJxtMueFt5Pim6lxOpjpGVi1gs3Y7RbUp6lfYhYIXlfu3lIdBF7AXWU0-NYVuQHoMz7xxa5lrhQ">
 <span class="material-symbols-outlined text-xl">download</span>
                             הורדה
                         </button>
@@ -230,7 +230,7 @@
 <img alt="שמש" class="w-full aspect-square object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLszgQ4htiDO0cQXFtU5GMmC1qeV2KRfu0o_84I4oJxvhwmgNJQgPB0wSJM8a9K62NbsYDUGL-PDDx4Hf5bFGsQOjODAJsb-DT4cSVU1NfXzL7n-Ci1-lUu79ObaU-P2-E7uFBgI1lZNoe_rN6B5B5vsUUlHn1hkdgLK3LtCjSuFBHR_gMUxJksLqkl9W9mwNaY2pl-T0cIMvKvuyhvC3h3Crk4F3IFrE59E0xVEWH5F90Y-daH4TmCAh5Q"/>
 <div class="p-4 text-center">
 <span class="font-headline-md block mb-3 text-on-surface">שמש</span>
-<button class="pressable-btn w-full bg-primary text-on-primary py-3 rounded-xl flex items-center justify-center gap-2">
+<button class="download-btn pressable-btn w-full bg-primary text-on-primary py-3 rounded-xl flex items-center justify-center gap-2" data-filename="שמש.jpg" data-url="https://lh3.googleusercontent.com/aida/AP1WRLszgQ4htiDO0cQXFtU5GMmC1qeV2KRfu0o_84I4oJxvhwmgNJQgPB0wSJM8a9K62NbsYDUGL-PDDx4Hf5bFGsQOjODAJsb-DT4cSVU1NfXzL7n-Ci1-lUu79ObaU-P2-E7uFBgI1lZNoe_rN6B5B5vsUUlHn1hkdgLK3LtCjSuFBHR_gMUxJksLqkl9W9mwNaY2pl-T0cIMvKvuyhvC3h3Crk4F3IFrE59E0xVEWH5F90Y-daH4TmCAh5Q">
 <span class="material-symbols-outlined text-xl">download</span>
                             הורדה
                         </button>
@@ -238,16 +238,14 @@
 </div>
 </div>
 </section>
-<!-- Note: In a real environment, the remaining 212 items would be injected here following the same structure. 
-             Since the prompt asks for placeholders based on the 214 illustrations, 
-             the structure remains consistent for the entire alphabet. -->
+<!-- More items following same pattern would be here -->
 <div class="bg-surface-container-high p-10 rounded-[2.5rem] text-center mb-16">
 <span class="material-symbols-outlined text-6xl text-primary mb-4">folder_zip</span>
 <h4 class="font-headline-md text-on-surface mb-2">מוכנים להוריד את הכל?</h4>
 <p class="text-body-lg text-on-surface-variant mb-8">כל האיורים שלנו מחכים לכם בתיקייה אחת מסודרת.</p>
-<button class="pressable-btn bg-primary text-on-primary font-headline-md px-14 py-6 rounded-full flex items-center gap-4 mx-auto scale-110">
+<button class="pressable-btn bg-primary text-on-primary font-headline-md px-14 py-6 rounded-full flex items-center gap-4 mx-auto scale-110" onclick="alert('הורדה מלאה תתאפשר בקרוב. בינתיים הורידו את האיורים באופן ידני.')">
 <span class="material-symbols-outlined text-3xl">download_for_offline</span>
-                הורד את כל 214 האיורים (ZIP)
+                הורדה ידנית של האיורים
             </button>
 </div>
 </div>
@@ -324,6 +322,39 @@
                 top: offsetPosition,
                 behavior: 'smooth'
             });
+        });
+    });
+
+    // Handle Image Downloads via Fetch/Blob to bypass cross-origin restrictions
+    document.querySelectorAll('.download-btn').forEach(button => {
+        button.addEventListener('click', async function() {
+            const url = this.getAttribute('data-url');
+            const filename = this.getAttribute('data-filename');
+            
+            const originalContent = this.innerHTML;
+            this.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> טוען...';
+            this.disabled = true;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Download failed');
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(blobUrl);
+            } catch (error) {
+                console.error('Error downloading image:', error);
+                alert('חלה שגיאה בהורדת הקובץ. נסה שוב מאוחר יותר.');
+            } finally {
+                this.innerHTML = originalContent;
+                this.disabled = false;
+            }
         });
     });
 </script>
