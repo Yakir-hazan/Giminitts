@@ -1,662 +1,330 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔑 מנהל מפתחות TTS</title>
+
+<html dir="rtl" lang="he"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>מרכז ההורדות הסופי של תרגולון</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#2e3036",
+                        "tertiary-container": "#498300",
+                        "surface-container": "#ecedf5",
+                        "secondary-fixed": "#ffddb4",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#f8f9ff",
+                        "primary-fixed": "#d4e3ff",
+                        "on-tertiary-fixed": "#0e2000",
+                        "on-surface-variant": "#414751",
+                        "on-secondary-fixed-variant": "#633f00",
+                        "primary-container": "#2976c7",
+                        "on-tertiary-fixed-variant": "#2a5000",
+                        "outline-variant": "#c1c7d3",
+                        "on-secondary-fixed": "#291800",
+                        "tertiary-fixed-dim": "#87dc2c",
+                        "secondary": "#835500",
+                        "tertiary-fixed": "#a1fa49",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#eff0f8",
+                        "surface": "#f8f9ff",
+                        "secondary-container": "#feae2c",
+                        "on-tertiary-container": "#f9ffeb",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#f2f3fb",
+                        "inverse-primary": "#a4c9ff",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed-dim": "#a4c9ff",
+                        "surface-dim": "#d8dae1",
+                        "secondary-fixed-dim": "#ffb955",
+                        "on-primary-fixed": "#001c39",
+                        "primary": "#005da7",
+                        "surface-container-highest": "#e1e2e9",
+                        "tertiary": "#386800",
+                        "on-background": "#191c21",
+                        "on-primary-fixed-variant": "#004883",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#0060ac",
+                        "surface-container-high": "#e6e8ef",
+                        "on-secondary-container": "#6b4500",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#191c21",
+                        "background": "#f8f9ff",
+                        "surface-variant": "#e1e2e9",
+                        "outline": "#717783",
+                        "on-error-container": "#93000a",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#fdfcff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "touch-target-min": "48px",
+                        "base": "8px",
+                        "gutter": "24px",
+                        "margin-desktop": "40px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Quicksand"],
+                        "headline-md": ["Quicksand"],
+                        "body-sm": ["Quicksand"],
+                        "body-lg": ["Quicksand"],
+                        "label-caps": ["Quicksand"],
+                        "display-lg-mobile": ["Quicksand"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "body-sm": ["16px", {"lineHeight": "24px", "fontWeight": "500"}],
+                        "body-lg": ["20px", {"lineHeight": "30px", "fontWeight": "500"}],
+                        "label-caps": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: #0f1117;
-    color: #e8e8e8;
-    min-height: 100vh;
-    padding: 2rem 1rem;
-    direction: rtl;
-  }
-  .container { max-width: 640px; margin: 0 auto; }
-  h1 { font-size: 20px; font-weight: 600; color: #fff; margin-bottom: 0.25rem; }
-  .subtitle { font-size: 13px; color: #888; margin-bottom: 2rem; }
-  .card {
-    background: #1a1d27;
-    border: 1px solid #2a2d3a;
-    border-radius: 12px;
-    padding: 1.25rem;
-    margin-bottom: 1rem;
-  }
-  .card-title {
-    font-size: 11px;
-    font-weight: 600;
-    color: #666;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    margin-bottom: 1rem;
-  }
-  label { display: block; font-size: 13px; color: #aaa; margin-bottom: 5px; }
-  .field { margin-bottom: 1rem; }
-  .field:last-child { margin-bottom: 0; }
-  .input-row { display: flex; gap: 6px; }
-  input[type="text"], input[type="password"] {
-    flex: 1;
-    background: #0f1117;
-    border: 1px solid #2a2d3a;
-    border-radius: 8px;
-    color: #e8e8e8;
-    font-size: 13px;
-    font-family: 'Consolas', monospace;
-    padding: 8px 12px;
-    outline: none;
-    transition: border-color 0.15s;
-    direction: ltr;
-    text-align: left;
-  }
-  input[type="text"].name-input {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    direction: rtl;
-    text-align: right;
-    max-width: 120px;
-    flex: none;
-  }
-  input:focus { border-color: #4a6cf7; }
-  button {
-    background: #1a1d27;
-    border: 1px solid #2a2d3a;
-    border-radius: 8px;
-    color: #e8e8e8;
-    font-size: 13px;
-    padding: 8px 14px;
-    cursor: pointer;
-    transition: background 0.15s, border-color 0.15s;
-    white-space: nowrap;
-  }
-  button:hover { background: #22263a; border-color: #3a3d52; }
-  button:active { transform: scale(0.98); }
-  button:disabled { opacity: 0.4; cursor: not-allowed; }
-  .btn-primary { background: #4a6cf7; border-color: #4a6cf7; color: #fff; font-weight: 500; }
-  .btn-primary:hover:not(:disabled) { background: #3a5ce6; border-color: #3a5ce6; }
-  .btn-check { background: #2a1f3a; border-color: #5a3a7a; color: #c088f0; font-weight: 500; font-size: 12px; padding: 6px 12px; }
-  .btn-check:hover:not(:disabled) { background: #331f4a; }
-
-  /* מפתחות שמורים */
-  .keys-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1rem; }
-  .key-row {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-    background: #0f1117;
-    border: 1px solid #2a2d3a;
-    border-radius: 8px;
-    padding: 8px 10px;
-    transition: border-color 0.15s;
-    cursor: pointer;
-  }
-  .key-row:hover { border-color: #3a3d52; }
-  .key-row.active { border-color: #4a6cf7; background: #111830; }
-  .key-row.status-ok { border-color: #2a6a4a; }
-  .key-row.status-ok.active { border-color: #4dbb88; background: #0f2a1a; }
-  .key-row.status-quota { border-color: #6a2a2a; }
-  .key-row.status-quota.active { border-color: #e05555; }
-  .key-name {
-    font-size: 13px;
-    color: #e8e8e8;
-    min-width: 90px;
-    font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .key-name input {
-    background: transparent;
-    border: none;
-    outline: none;
-    color: #e8e8e8;
-    font-size: 13px;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    direction: rtl;
-    text-align: right;
-    width: 90px;
-    padding: 0;
-  }
-  .key-val {
-    flex: 1;
-    font-family: 'Consolas', monospace;
-    font-size: 11px;
-    color: #666;
-    direction: ltr;
-    text-align: left;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .key-val input {
-    background: transparent;
-    border: none;
-    outline: none;
-    color: #888;
-    font-size: 11px;
-    font-family: 'Consolas', monospace;
-    direction: ltr;
-    text-align: left;
-    width: 100%;
-    padding: 0;
-  }
-  .key-status {
-    font-size: 16px;
-    width: 22px;
-    text-align: center;
-    flex-shrink: 0;
-  }
-  .key-status.checking { animation: spin 1s linear infinite; display: inline-block; }
-  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-  .key-use-btn {
-    font-size: 11px;
-    padding: 4px 8px;
-    flex-shrink: 0;
-    background: #1a2a1a;
-    border-color: #2a4a2a;
-    color: #4dbb88;
-  }
-  .key-use-btn:hover { background: #1f3a1f; }
-  .key-del-btn {
-    font-size: 11px;
-    padding: 4px 8px;
-    flex-shrink: 0;
-    color: #666;
-  }
-  .key-del-btn:hover { color: #e05555; border-color: #6a2a2a; }
-  .keys-actions { display: flex; gap: 8px; align-items: center; }
-  .active-key-display {
-    background: #0a0c12;
-    border: 1px solid #2a6a4a;
-    border-radius: 8px;
-    padding: 8px 12px;
-    font-size: 12px;
-    color: #4dbb88;
-    font-family: 'Consolas', monospace;
-    direction: ltr;
-    text-align: left;
-    margin-bottom: 0.5rem;
-    display: none;
-  }
-  .active-key-display.visible { display: block; }
-
-  .cmd-step {
-    background: #0a0c12;
-    border: 1px solid #2a2d3a;
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    margin-bottom: 8px;
-  }
-  .cmd-row { display: flex; gap: 8px; align-items: center; }
-  .cmd-text {
-    flex: 1;
-    font-family: 'Consolas', monospace;
-    font-size: 12px;
-    line-height: 1.5;
-    color: #c8d0e8;
-    white-space: pre-wrap;
-    word-break: break-all;
-    direction: ltr;
-    text-align: left;
-  }
-  .cmd-text.placeholder { color: #444; font-style: italic; direction: rtl; text-align: right; font-family: inherit; }
-  .copy-btn { font-size: 11px; padding: 5px 10px; flex-shrink: 0; }
-  .hint { font-size: 11px; color: #555; margin-top: 5px; }
-  code { font-size: 12px; color: #aaa; font-family: 'Consolas', monospace; }
-  .step-num { font-size: 11px; color: #4a6cf7; font-weight: 600; margin-bottom: 3px; }
-</style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #f8f9ff;
+            font-family: 'Quicksand', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1.5rem;
+        }
+        .alphabet-section {
+            scroll-margin-top: 120px;
+        }
+        .pressable-btn {
+            box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.1);
+            transition: all 0.1s ease;
+        }
+        .pressable-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0.1);
+        }
+        .card-standard {
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .card-standard:hover {
+            border-color: #2976c7;
+            transform: scale(1.02);
+        }
+        .nav-active {
+            background-color: #005da7;
+            color: #ffffff !important;
+            border-radius: 0.75rem;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c1c7d3;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #717783;
+        }
+    </style>
 </head>
-<body>
-<div class="container">
-
-  <h1>🔑 מנהל מפתחות TTS</h1>
-  <p class="subtitle">ניהול מפתחות + הפקת סקריפט</p>
-
-  <!-- מפתחות שמורים -->
-  <div class="card">
-    <div class="card-title">🔑 מפתחות שמורים</div>
-    <div class="keys-list" id="keys-list"></div>
-    <div class="keys-actions">
-      <button onclick="addKey()" id="add-key-btn">+ הוסף מפתח</button>
-      <button class="btn-check" onclick="checkAllKeys()" id="check-btn">⚡ בדוק הכל</button>
-    </div>
-  </div>
-
-  <!-- מפתח פעיל -->
-  <div class="card">
-    <div class="card-title">מפתח API פעיל</div>
-    <div class="active-key-display" id="active-key-display"></div>
-    <div class="field" style="margin-bottom:0">
-      <label>או הכנס ידנית</label>
-      <div class="input-row">
-        <input type="password" id="api-key" placeholder="AIzaSy..." oninput="onKeyInput()" />
-        <button onclick="toggleKey()" id="toggle-btn">הצג</button>
-      </div>
-      <p class="hint">המפתח נשמר רק בדפדפן — לא יוצא לשום מקום</p>
-    </div>
-  </div>
-
-  <!-- הגדרות -->
-  <div class="card">
-    <div class="card-title">הגדרות סקריפט</div>
-    <div class="field">
-      <label>נתיב לתיקיית הפרויקט</label>
-      <input type="text" id="folder" style="width:100%"
-        value="/private/var/mobile/Containers/Shared/AppGroup/AD3A26B6-23EE-48B9-96E0-8F14661D28B4/File Provider Storage/הורדות/Tirgolon-main 22"
-        oninput="sync()" />
-    </div>
-    <div class="field">
-      <label>תיקיית פלט לאודיו</label>
-      <input type="text" id="audio-out" style="width:100%" value="./audio_words" oninput="sync()" />
-    </div>
-    <div class="field">
-      <label>קול</label>
-      <input type="text" id="voice" style="width:100%" value="Kore" oninput="sync()" />
-    </div>
-    <div class="field">
-      <label>מודל</label>
-      <input type="text" id="model" style="width:100%" value="gemini-3.1-flash-tts-preview" oninput="sync()" />
-    </div>
-    <div class="field" style="margin-bottom:0">
-      <label>השהייה בין מילים (ms)</label>
-      <input type="text" id="delay" style="width:100%" value="10000" oninput="sync()" />
-    </div>
-  </div>
-
-  <!-- פקודות -->
-  <div class="card">
-    <div class="card-title">פקודות להרצה — הרץ לפי סדר</div>
-    <div class="cmd-step">
-      <div class="step-num">שלב 1 — הגדר מפתח</div>
-      <div class="cmd-row">
-        <div class="cmd-text placeholder" id="cmd1">← הכנס מפתח</div>
-        <button class="copy-btn" onclick="copyStep(1)">העתק</button>
-      </div>
-    </div>
-    <div class="cmd-step">
-      <div class="step-num">שלב 2 — עבור לתיקייה והרץ</div>
-      <div class="cmd-row">
-        <div class="cmd-text placeholder" id="cmd2">← הכנס מפתח</div>
-        <button class="copy-btn" onclick="copyStep(2)">העתק</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- הורדת סקריפט -->
-  <div class="card">
-    <div class="card-title">סקריפט JS</div>
-    <p style="font-size:13px; color:#888; margin-bottom:1rem;">
-      קובץ <code>generate_words_audio.js</code> עם המפתח וכל ההגדרות — מוכן להריץ עם <code>node</code>
-    </p>
-    <button class="btn-primary" onclick="downloadJS()">הורד generate_words_audio.js</button>
-  </div>
-
+<body class="text-on-surface bg-background">
+<!-- Top AppBar -->
+<header class="fixed top-0 w-full z-50 flex items-center justify-between px-margin-mobile h-16 bg-white border-b-2 border-surface-container-highest shadow-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">auto_awesome</span>
+<h1 class="font-headline-md text-primary">מרכז ההורדות</h1>
 </div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant p-2 rounded-full hover:bg-surface-container">search</button>
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+</div>
+</header>
+<main class="pt-24 pb-32 px-4 md:px-margin-desktop max-w-7xl mx-auto">
+<!-- Hero / Top Action -->
+<div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-6 bg-primary-container p-8 rounded-[2rem] text-on-primary-container">
+<div class="text-center md:text-right">
+<h2 class="font-display-lg-mobile md:font-display-lg mb-2">מרכז ההורדות הסופי</h2>
+<p class="text-body-lg opacity-90 max-w-xl">כל 214 האיורים המדהימים ב-3D לשימוש בכיתה או בבית. מאורגן לפי סדר הא'-ב'.</p>
+</div>
+<button class="pressable-btn bg-surface-container-lowest text-primary font-headline-md px-10 py-5 rounded-2xl flex items-center gap-3">
+<span class="material-symbols-outlined">download_for_offline</span>
+            הורד הכל (214 איורים)
+        </button>
+</div>
+<!-- Alphabet Quick Nav -->
+<nav class="flex flex-wrap justify-center gap-2 mb-12 sticky top-20 z-40 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-md border border-outline-variant overflow-x-auto">
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-א">א</a>
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-ב">ב</a>
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-ג">ג</a>
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-ד">ד</a>
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-ה">ה</a>
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-ו">ו</a>
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-ז">ז</a>
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-ח">ח</a>
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-ט">ט</a>
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-י">י</a>
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-כ">כ</a>
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-ל">ל</a>
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-מ">מ</a>
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-נ">נ</a>
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-ס">ס</a>
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-ע">ע</a>
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-פ">פ</a>
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-צ">צ</a>
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-ק">ק</a>
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-ר">ר</a>
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-ש">ש</a>
+<a class="w-10 h-10 flex items-center justify-center font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors" href="#section-ת">ת</a>
+</nav>
+<!-- Content Sections -->
+<div id="download-content">
+<!-- Section: ע (World Example) -->
+<section class="alphabet-section mb-16" id="section-ע">
+<div class="flex items-center gap-4 mb-8 border-b-4 border-secondary-container pb-2">
+<span class="bg-secondary-container text-white w-14 h-14 flex items-center justify-center rounded-2xl font-display-lg-mobile shadow-lg">ע</span>
+<h3 class="font-headline-md text-secondary">אות עין</h3>
+</div>
+<div class="bento-grid">
+<!-- Example Item from Snapshot -->
+<div class="flex flex-col bg-surface-container-lowest rounded-[2rem] overflow-hidden shadow-md card-standard">
+<img alt="עולם" class="w-full aspect-square object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLurqX3fYk7wD9xxa_PT1VA43IjnUlcGW8ibfpnv-pr-PbfcZB4CjgJCeEoAmgB4DQOUx-DxR6Ko9XE9QNbkrc6Q6qHqXcHaDH2-P1N87oOBtG1-CNsAp1Sx-KZIXeEQbNZzn1HAThvglzDuQvREx5MUMGqgibAdcinwNckLnqQDOtAsSJxtMueFt5Pim6lxOpjpGVi1gs3Y7RbUp6lfYhYIXlfu3lIdBF7AXWU0-NYVuQHoMz7xxa5lrhQ"/>
+<div class="p-4 text-center">
+<span class="font-headline-md block mb-3 text-on-surface">עולם</span>
+<button class="pressable-btn w-full bg-primary text-on-primary py-3 rounded-xl flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-xl">download</span>
+                            הורדה
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: ש (Sun Example) -->
+<section class="alphabet-section mb-16" id="section-ש">
+<div class="flex items-center gap-4 mb-8 border-b-4 border-primary pb-2">
+<span class="bg-primary text-white w-14 h-14 flex items-center justify-center rounded-2xl font-display-lg-mobile shadow-lg">ש</span>
+<h3 class="font-headline-md text-primary">אות שין</h3>
+</div>
+<div class="bento-grid">
+<!-- Example Item from Snapshot -->
+<div class="flex flex-col bg-surface-container-lowest rounded-[2rem] overflow-hidden shadow-md card-standard">
+<img alt="שמש" class="w-full aspect-square object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLszgQ4htiDO0cQXFtU5GMmC1qeV2KRfu0o_84I4oJxvhwmgNJQgPB0wSJM8a9K62NbsYDUGL-PDDx4Hf5bFGsQOjODAJsb-DT4cSVU1NfXzL7n-Ci1-lUu79ObaU-P2-E7uFBgI1lZNoe_rN6B5B5vsUUlHn1hkdgLK3LtCjSuFBHR_gMUxJksLqkl9W9mwNaY2pl-T0cIMvKvuyhvC3h3Crk4F3IFrE59E0xVEWH5F90Y-daH4TmCAh5Q"/>
+<div class="p-4 text-center">
+<span class="font-headline-md block mb-3 text-on-surface">שמש</span>
+<button class="pressable-btn w-full bg-primary text-on-primary py-3 rounded-xl flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-xl">download</span>
+                            הורדה
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Note: In a real environment, the remaining 212 items would be injected here following the same structure. 
+             Since the prompt asks for placeholders based on the 214 illustrations, 
+             the structure remains consistent for the entire alphabet. -->
+<div class="bg-surface-container-high p-10 rounded-[2.5rem] text-center mb-16">
+<span class="material-symbols-outlined text-6xl text-primary mb-4">folder_zip</span>
+<h4 class="font-headline-md text-on-surface mb-2">מוכנים להוריד את הכל?</h4>
+<p class="text-body-lg text-on-surface-variant mb-8">כל האיורים שלנו מחכים לכם בתיקייה אחת מסודרת.</p>
+<button class="pressable-btn bg-primary text-on-primary font-headline-md px-14 py-6 rounded-full flex items-center gap-4 mx-auto scale-110">
+<span class="material-symbols-outlined text-3xl">download_for_offline</span>
+                הורד את כל 214 האיורים (ZIP)
+            </button>
+</div>
+</div>
+</main>
+<footer class="w-full py-12 px-margin-mobile text-center flex flex-col items-center gap-6 mb-20 bg-surface-container-lowest border-t border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-2xl">auto_awesome</span>
+<h2 class="font-headline-md text-primary">תרגולון</h2>
+</div>
+<p class="font-body-sm text-on-surface-variant max-w-md">תודה שבחרתם להשתמש במאגר האיורים שלנו. אנחנו מעדכנים אותו כל הזמן!</p>
+<div class="flex gap-8">
+<a class="text-primary hover:underline font-bold" href="#">מדיניות פרטיות</a>
+<a class="text-primary hover:underline font-bold" href="#">מרכז עזרה</a>
+<a class="text-primary hover:underline font-bold" href="#">צרו קשר</a>
+</div>
+</footer>
+<!-- Bottom Nav Bar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 py-3 bg-white border-t-2 border-surface-container-highest rounded-t-3xl shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-surface-container rounded-xl transition-all">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-caps text-[10px] mt-1 uppercase">שיעורים</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-surface-container rounded-xl transition-all">
+<span class="material-symbols-outlined">category</span>
+<span class="font-label-caps text-[10px] mt-1 uppercase">קטגוריות</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary text-on-primary rounded-2xl px-6 py-2 shadow-lg shadow-primary/20 scale-105">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">download</span>
+<span class="font-label-caps text-[10px] mt-1 uppercase">הורדות</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-surface-container rounded-xl transition-all">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-caps text-[10px] mt-1 uppercase">הגדרות</span>
+</button>
+</nav>
 <script>
-// ---- מפתחות שמורים ----
-const MAX_KEYS = 7;
-let savedKeys = [];
-
-function loadKeys() {
-  try {
-    savedKeys = JSON.parse(localStorage.getItem('gemini_keys') || '[]');
-  } catch(e) { savedKeys = []; }
-  if (savedKeys.length === 0) {
-    savedKeys = [{ id: Date.now(), name: 'חשבון 1', key: '', status: 'unknown' }];
-  }
-}
-
-function saveKeys() {
-  localStorage.setItem('gemini_keys', JSON.stringify(savedKeys));
-}
-
-function renderKeys() {
-  const list = document.getElementById('keys-list');
-  list.innerHTML = '';
-  savedKeys.forEach((k, i) => {
-    const row = document.createElement('div');
-    const activeKey = getKey();
-    const isActive = activeKey && activeKey === k.key;
-    row.className = 'key-row' + (isActive ? ' active' : '') +
-      (k.status === 'ok' ? ' status-ok' : k.status === 'quota' ? ' status-quota' : '');
-
-    const statusIcon = k.status === 'ok' ? '✅' : k.status === 'quota' ? '⛔' : '❓';
-    const maskedKey = k.key ? k.key.slice(0,8) + '...' + k.key.slice(-4) : '(ריק)';
-
-    row.innerHTML = `
-      <div class="key-name"><input type="text" value="${escHtml(k.name)}" placeholder="שם" onchange="renameKey(${i}, this.value)" onclick="event.stopPropagation()" /></div>
-      <div class="key-val"><input type="password" value="${escHtml(k.key)}" placeholder="AIzaSy..." onchange="updateKeyVal(${i}, this.value)" onclick="event.stopPropagation()" /></div>
-      <div class="key-status" id="key-status-${i}">${statusIcon}</div>
-      <button class="key-use-btn" onclick="event.stopPropagation(); useKey(${i})">השתמש</button>
-      <button class="key-del-btn" onclick="event.stopPropagation(); deleteKey(${i})">✕</button>
-    `;
-    row.onclick = () => useKey(i);
-    list.appendChild(row);
-  });
-
-  const addBtn = document.getElementById('add-key-btn');
-  addBtn.disabled = savedKeys.length >= MAX_KEYS;
-}
-
-function escHtml(s) {
-  return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
-}
-
-function addKey() {
-  if (savedKeys.length >= MAX_KEYS) return;
-  savedKeys.push({ id: Date.now(), name: 'חשבון ' + (savedKeys.length + 1), key: '', status: 'unknown' });
-  saveKeys();
-  renderKeys();
-}
-
-function deleteKey(i) {
-  savedKeys.splice(i, 1);
-  saveKeys();
-  renderKeys();
-}
-
-function renameKey(i, val) {
-  savedKeys[i].name = val;
-  saveKeys();
-}
-
-function updateKeyVal(i, val) {
-  const extracted = extractApiKey(val.trim());
-  savedKeys[i].key = extracted;
-  savedKeys[i].status = 'unknown';
-  saveKeys();
-  renderKeys();
-}
-
-function useKey(i) {
-  const k = savedKeys[i];
-  if (!k.key) return;
-  document.getElementById('api-key').value = k.key;
-  updateActiveDisplay(k);
-  sync();
-  renderKeys();
-}
-
-function updateActiveDisplay(k) {
-  const el = document.getElementById('active-key-display');
-  if (k && k.key) {
-    el.textContent = '🔑 ' + k.name + ': ' + k.key.slice(0,8) + '...' + k.key.slice(-4);
-    el.classList.add('visible');
-  } else {
-    el.classList.remove('visible');
-  }
-}
-
-async function checkKey(i) {
-  const k = savedKeys[i];
-  if (!k.key) return;
-  const statusEl = document.getElementById('key-status-' + i);
-  if (statusEl) { statusEl.textContent = '⏳'; statusEl.classList.add('checking'); }
-
-  try {
-    // שלב 1: בדיקת תקינות המפתח — לא גוזל quota
-    const res1 = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models?key=' + encodeURIComponent(k.key)
-    );
-    const json1 = await res1.json();
-    if (json1.error) {
-      const msg1 = (json1.error.message || '').toLowerCase();
-      savedKeys[i].status = (msg1.includes('api key not valid') || msg1.includes('invalid') || res1.status === 403) ? 'error' : 'error';
-    } else {
-      // שלב 2: בדיקת quota TTS ספציפית — שולח בקשה אמיתית קטנה
-      const body = JSON.stringify({
-        contents: [{ parts: [{ text: 'א' }] }],
-        generationConfig: {
-          responseModalities: ['AUDIO'],
-          speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Kore' } } }
-        }
-      });
-      const model = getModel();
-      const res2 = await fetch(
-        'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + encodeURIComponent(k.key),
-        { method: 'POST', headers: { 'Content-Type': 'application/json' }, body }
-      );
-      const json2 = await res2.json();
-      if (json2.error) {
-        const msg2 = (json2.error.message || '').toLowerCase();
-        savedKeys[i].status = msg2.includes('quota') ? 'quota' : 'error';
-      } else {
-        savedKeys[i].status = 'ok';
-      }
-    }
-  } catch(e) {
-    savedKeys[i].status = 'error';
-  }
-
-  if (statusEl) statusEl.classList.remove('checking');
-  saveKeys();
-  renderKeys();
-}
-
-async function checkAllKeys() {
-  const btn = document.getElementById('check-btn');
-  btn.disabled = true;
-  btn.textContent = '⏳ בודק...';
-  for (let i = 0; i < savedKeys.length; i++) {
-    if (savedKeys[i].key) await checkKey(i);
-  }
-  btn.disabled = false;
-  btn.textContent = '⚡ בדוק הכל';
-
-  // אוטומטי — בחר את הראשון שזמין
-  const firstOk = savedKeys.find(k => k.status === 'ok');
-  if (firstOk) {
-    document.getElementById('api-key').value = firstOk.key;
-    updateActiveDisplay(firstOk);
-    sync();
-    renderKeys();
-  }
-}
-
-// ---- מפתח פעיל ----
-function getKey()      { return document.getElementById('api-key').value.trim(); }
-function getFolder()   { return document.getElementById('folder').value.trim(); }
-function getAudioOut() { return document.getElementById('audio-out').value.trim() || './audio_words'; }
-function getVoice()    { return document.getElementById('voice').value.trim() || 'Kore'; }
-function getModel()    { return document.getElementById('model').value.trim() || 'gemini-3.1-flash-tts-preview'; }
-function getDelay()    { return parseInt(document.getElementById('delay').value) || 10000; }
-
-function extractApiKey(raw) {
-  const match = raw.match(/key=([A-Za-z0-9_\-]+)/);
-  if (match) return match[1];
-  const direct = raw.match(/AIza[A-Za-z0-9_\-]{35,}/);
-  if (direct) return direct[0];
-  return raw;
-}
-
-function onKeyInput() {
-  const el = document.getElementById('api-key');
-  const val = el.value.trim();
-  if (val.includes(' ') || val.includes('curl')) {
-    const extracted = extractApiKey(val);
-    if (extracted !== val) el.value = extracted;
-  }
-  updateActiveDisplay(null);
-  sync();
-}
-
-function sync() {
-  const key = getKey();
-  const c1 = document.getElementById('cmd1');
-  const c2 = document.getElementById('cmd2');
-  if (!key) {
-    c1.textContent = '← הכנס מפתח'; c1.classList.add('placeholder');
-    c2.textContent = '← הכנס מפתח'; c2.classList.add('placeholder');
-  } else {
-    c1.classList.remove('placeholder');
-    c2.classList.remove('placeholder');
-    c1.textContent = 'export GEMINI_KEY="' + key + '"';
-    c2.textContent = 'cd "' + getFolder() + '" && node generate_words_audio.js';
-  }
-}
-
-function toggleKey() {
-  const el = document.getElementById('api-key');
-  const btn = document.getElementById('toggle-btn');
-  el.type = el.type === 'password' ? 'text' : 'password';
-  btn.textContent = el.type === 'password' ? 'הצג' : 'הסתר';
-}
-
-function copyStep(n) {
-  if (!getKey()) { alert('הכנס מפתח קודם'); return; }
-  const text = document.getElementById('cmd' + n).textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    const btns = document.querySelectorAll('.copy-btn');
-    const btn = btns[n - 1];
-    const orig = btn.textContent;
-    btn.textContent = '✓';
-    setTimeout(() => btn.textContent = orig, 1500);
-  });
-}
-
-function buildJS() {
-  const key      = getKey();
-  const audioOut = getAudioOut();
-  const voice    = getVoice();
-  const model    = getModel();
-  const delay    = getDelay();
-
-  return `/**
- * generate_words_audio.js
- * מייצר קובצי אודיו ל-words.json
- * Node 16 — ללא תלויות חיצוניות
- */
-const https = require('https');
-const fs = require('fs');
-const path = require('path');
-
-const API_KEY    = process.env.GEMINI_KEY || '${key}';
-const OUTPUT_DIR = '${audioOut}';
-const MODEL      = '${model}';
-const VOICE      = '${voice}';
-const DELAY_MS   = ${delay};
-
-function callGeminiTTS(text, tone) {
-  return new Promise((resolve, reject) => {
-    const taggedText = tone ? '[' + tone + '] ' + text : text;
-    const body = JSON.stringify({
-      contents: [{ parts: [{ text: taggedText }] }],
-      generationConfig: {
-        responseModalities: ['AUDIO'],
-        speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: VOICE } } }
-      }
-    });
-    const options = {
-      hostname: 'generativelanguage.googleapis.com',
-      path: '/v1beta/models/' + MODEL + ':generateContent?key=' + encodeURIComponent(API_KEY),
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
+    // Alphabet Navigation Active State Observer
+    const sections = document.querySelectorAll('.alphabet-section');
+    const navLinks = document.querySelectorAll('nav a');
+    
+    const observerOptions = {
+        root: null,
+        rootMargin: '-150px 0px -70% 0px',
+        threshold: 0
     };
-    const req = https.request(options, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        try {
-          const json = JSON.parse(data);
-          if (json.error) {
-            const msg = json.error.message || '';
-            if (msg.toLowerCase().includes('quota')) {
-              return reject(new Error('QUOTA_EXCEEDED: ' + msg));
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.getAttribute('id');
+                navLinks.forEach(link => {
+                    link.classList.remove('nav-active');
+                    if (link.getAttribute('href') === `#${id}`) {
+                        link.classList.add('nav-active');
+                    }
+                });
             }
-            return reject(new Error(msg));
-          }
-          resolve(json.candidates[0].content.parts[0].inlineData.data);
-        } catch (e) { reject(new Error('Parse error: ' + data.slice(0, 200))); }
-      });
+        });
+    }, observerOptions);
+
+    sections.forEach(section => observer.observe(section));
+
+    // Smooth scroll offset adjustment
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            const headerOffset = 130;
+            const elementPosition = targetElement.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        });
     });
-    req.on('error', reject);
-    req.write(body);
-    req.end();
-  });
-}
-
-function addWavHeader(pcmBuffer) {
-  const dataSize = pcmBuffer.length;
-  const header = Buffer.alloc(44);
-  header.write('RIFF', 0); header.writeUInt32LE(dataSize + 36, 4);
-  header.write('WAVE', 8); header.write('fmt ', 12);
-  header.writeUInt32LE(16, 16); header.writeUInt16LE(1, 20);
-  header.writeUInt16LE(1, 22); header.writeUInt32LE(24000, 24);
-  header.writeUInt32LE(24000 * 2, 28); header.writeUInt16LE(2, 32);
-  header.writeUInt16LE(16, 34); header.write('data', 36);
-  header.writeUInt32LE(dataSize, 40);
-  return Buffer.concat([header, pcmBuffer]);
-}
-
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-async function main() {
-  if (!API_KEY || API_KEY === 'YOUR_API_KEY_HERE') {
-    console.error('הכנס GEMINI_KEY כ-environment variable'); process.exit(1);
-  }
-  if (!fs.existsSync(OUTPUT_DIR)) fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-  const wordsJson = JSON.parse(fs.readFileSync('./words.json', 'utf8'));
-  const words = [];
-  for (const [letter, items] of Object.entries(wordsJson)) {
-    for (const item of items) {
-      const cleanWord = item.word.replace(/[\\u05B0-\\u05C7]/g, '');
-      words.push({ word: item.word, tone: item.tone || '', filename: letter + '_' + cleanWord + '.wav' });
-    }
-  }
-  console.log('מילים: ' + words.length + ' | קול: ' + VOICE);
-  let success = 0, failed = 0;
-  const failedWords = [];
-  for (let i = 0; i < words.length; i++) {
-    const { word, tone, filename } = words[i];
-    const progress = '[' + (i+1) + '/' + words.length + ']';
-    const filepath = path.join(OUTPUT_DIR, filename);
-    if (fs.existsSync(filepath)) { console.log('קיים ' + progress + ': ' + filename); success++; continue; }
-    try {
-      const pcm = Buffer.from(await callGeminiTTS(word, tone), 'base64');
-      fs.writeFileSync(filepath, addWavHeader(pcm));
-      console.log('OK ' + progress + (tone ? ' [' + tone + ']' : '') + ' ' + word);
-      success++;
-    } catch (err) {
-      if (err.message.startsWith('QUOTA_EXCEEDED')) {
-        console.error('\\n⛔ Quota חרגת מהמכסה — עצירה. נסה מחר או הוסף billing.');
-        console.error('הצליחו: ' + success + ' | נכשלו: ' + failed);
-        if (failedWords.length > 0) {
-          console.error('\\nמילים שנכשלו:');
-          failedWords.forEach(w => console.error('  • ' + w));
-        }
-        process.exit(1);
-      }
-      console.error('ERR ' + progress + ' ' + word + ' -- ' + err.message);
-      failedWords.push(word + ' (' + filename + ')');
-      failed++;
-    }
-    if (i < words.length - 1) await sleep(DELAY_MS);
-  }
-  console.log('\\n--- סיכום ---');
-  console.log('הצליחו: ' + success + ' | נכשלו: ' + failed);
-  if (failedWords.length > 0) {
-    console.log('\\nמילים שנכשלו:');
-    failedWords.forEach(w => console.log('  • ' + w));
-  }
-  console.log('סיום! ' + OUTPUT_DIR + '/');
-}
-
-main().catch(console.error);
-`;
-}
-
-function downloadJS() {
-  if (!getKey()) { alert('הכנס מפתח קודם'); return; }
-  const blob = new Blob([buildJS()], { type: 'text/javascript' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'generate_words_audio.js';
-  a.click();
-}
-
-// ---- init ----
-loadKeys();
-renderKeys();
 </script>
-</body>
-</html>
+</body></html>
