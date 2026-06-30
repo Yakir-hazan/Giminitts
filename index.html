@@ -18,6 +18,18 @@
     background-position: center top;
     overflow: hidden;
   }
+  /* שקע כהה ובלתי-סדיר מאחורי העין - מדמה חריץ/קרע בקליפה שהעין יושבת בתוכו,
+     כך שהיא נראית חלק מהעץ ולא מודבקת מעליו */
+  .eye-socket {
+    position: absolute;
+    width: 170px;
+    height: 110px;
+    border-radius: 55% 45% 50% 50% / 60% 55% 45% 40%;
+    background: radial-gradient(ellipse at center, rgba(20,12,5,0.55) 0%, rgba(20,12,5,0.35) 45%, rgba(20,12,5,0) 75%);
+    filter: blur(6px);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
   /* עיניים - ממוקמות זו ליד זו מעל חריץ הפה, בגוון זהוב כדי ליצור
      מבנה פנים ברור ולהבדיל אותן מהגחליליות הרגילות בתמונה */
   .eye {
@@ -26,14 +38,18 @@
     height: 78px;
     border-radius: 50%;
     /* "לבן" העין - גוון שנהבי-קרמי שמתאים לתאורת היער, לא לבן נקי */
-    background: radial-gradient(ellipse at center, #F2E9D8 0%, #E4D7BE 70%, #C9BBA0 100%);
+    background: radial-gradient(ellipse at center, #F2E9D8 0%, #E4D7BE 55%, #B8A684 80%, rgba(120,100,70,0) 100%);
+    /* מסיכת דהייה - הקצוות נעלמים בהדרגה במקום קו חיתוך חד, כך שהלבן מתמזג בקליפה */
+    -webkit-mask-image: radial-gradient(ellipse at center, black 55%, transparent 90%);
+    mask-image: radial-gradient(ellipse at center, black 55%, transparent 90%);
+    mix-blend-mode: soft-light;
     box-shadow:
-      0 0 18px 4px rgba(250, 199, 117, 0.35),
       inset 0 2px 4px rgba(0,0,0,0.35);
     overflow: hidden;
     transform: translate(-50%, -50%);
     transition: transform 0.2s ease;
   }
+
   /* קשתית - טבעת זהובה-ירקרקה סביב האישון */
   .eye::before {
     content: "";
@@ -61,6 +77,14 @@
       -3px -3px 0 1px rgba(255,255,255,0.85),
       0 0 4px 1px rgba(0,0,0,0.6);
     transform: translate(-50%, -50%);
+  }
+  .eye-socket-left {
+    top: 39%;
+    left: 42%;
+  }
+  .eye-socket-right {
+    top: 39%;
+    left: 57%;
   }
   .eye-left {
     top: 39%;
@@ -123,6 +147,8 @@
 </head>
 <body>
 <div class="tree-character" id="treeCharacter">
+  <div class="eye-socket eye-socket-left"></div>
+  <div class="eye-socket eye-socket-right"></div>
   <div class="eye eye-left"></div>
   <div class="eye eye-right"></div>
   <div class="mouth-slot" id="mouthSlot">
