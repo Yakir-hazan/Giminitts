@@ -22,24 +22,32 @@
      מבנה פנים ברור ולהבדיל אותן מהגחליליות הרגילות בתמונה */
   .eye {
     position: absolute;
-    width: 100px;
-    height: 84px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 50% 45%, #FFF8E8 0%, #FFE8B0 22%, #FAC050 48%, #C9821F 70%, transparent 85%);
-    box-shadow: 0 0 44px 18px rgba(250, 199, 117, 0.5);
-    transform: translate(-50%, -50%);
+    width: 110px;
+    height: 78px;
+    /* צורה אורגנית לא סימטרית - כמו חריץ/קרע בקליפת העץ ולא עיגול מושלם */
+    border-radius: 60% 40% 55% 45% / 65% 55% 45% 35%;
+    background:
+      radial-gradient(circle at 50% 55%, #FFE9B8 0%, #F2A93C 25%, #8a5a1e 55%, #2e1c0c 80%, transparent 100%);
+    box-shadow:
+      0 0 30px 10px rgba(250, 199, 117, 0.45),
+      inset 0 0 18px 6px rgba(0, 0, 0, 0.6);
+    border: 2px solid rgba(60, 38, 16, 0.7);
+    transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
     transition: transform 0.2s ease;
   }
-  /* אישון כהה במרכז כדי שהעין תיראה אמיתית ולא רק נקודת אור */
+  .eye-left { --rot: -4deg; }
+  .eye-right { --rot: 4deg; }
+  /* אישון - חריץ זוהר אורגני במרכז החריץ, כמו גחלת לוהטת בתוך החור בעץ */
   .eye::after {
     content: "";
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 30px;
-    height: 38px;
-    border-radius: 50%;
-    background: radial-gradient(circle, #2b1605 0%, #1a0d03 70%, transparent 100%);
+    width: 26px;
+    height: 36px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    background: radial-gradient(circle, #FFF6DE 0%, #FFB23E 40%, #c46a12 75%, transparent 100%);
+    box-shadow: 0 0 14px 4px rgba(255, 200, 100, 0.7);
     transform: translate(-50%, -50%);
   }
   .eye-left {
@@ -52,8 +60,8 @@
   }
   /* אנימציית מצמוץ עדינה */
   @keyframes blink {
-    0%, 92%, 100% { transform: scaleY(1); }
-    95% { transform: scaleY(0.1); }
+    0%, 92%, 100% { transform: translate(-50%, -50%) rotate(var(--rot, 0deg)) scaleY(1); }
+    95% { transform: translate(-50%, -50%) rotate(var(--rot, 0deg)) scaleY(0.1); }
   }
   .eye {
     animation: blink 5s infinite;
