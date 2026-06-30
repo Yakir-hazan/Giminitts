@@ -1,468 +1,138 @@
 <!DOCTYPE html>
-
-<html dir="rtl" lang="he"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>מרכז ההורדות המלא - Tirgulon</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="UTF-8">
+<title>עץ הקסם - תווית דמות</title>
 <style>
-        body {
-            font-family: 'Quicksand', sans-serif;
-            scroll-behavior: smooth;
-        }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
-        }
-        /* Custom scrollbar for alphabet bar */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        /* Sticky alphabet bar shadow transition */
-        .alphabet-sticky {
-            transition: all 0.3s ease;
-        }
-        .alphabet-sticky.is-pinned {
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-        }
-        /* Button 3D effect from style guidance */
-        .btn-3d {
-            border-bottom: 4px solid rgba(0, 0, 0, 0.2);
-        }
-        .btn-3d:active {
-            transform: translateY(2px);
-            border-bottom-width: 2px;
-        }
-    </style>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "inverse-surface": "#2e3036",
-                        "outline-variant": "#c1c7d3",
-                        "surface-container-lowest": "#ffffff",
-                        "background": "#f8f9ff",
-                        "surface-container": "#ecedf5",
-                        "on-secondary-container": "#6b4500",
-                        "on-primary-fixed-variant": "#004883",
-                        "surface-container-low": "#f2f3fb",
-                        "surface": "#f8f9ff",
-                        "on-primary": "#ffffff",
-                        "secondary-container": "#feae2c",
-                        "on-tertiary-fixed": "#0e2000",
-                        "on-primary-fixed": "#001c39",
-                        "inverse-primary": "#a4c9ff",
-                        "inverse-on-surface": "#eff0f8",
-                        "surface-dim": "#d8dae1",
-                        "primary": "#005da7",
-                        "on-primary-container": "#fdfcff",
-                        "on-secondary-fixed-variant": "#633f00",
-                        "on-tertiary-fixed-variant": "#2a5000",
-                        "on-tertiary": "#ffffff",
-                        "on-error": "#ffffff",
-                        "tertiary-fixed": "#a1fa49",
-                        "primary-fixed-dim": "#a4c9ff",
-                        "surface-container-highest": "#e1e2e9",
-                        "error-container": "#ffdad6",
-                        "surface-bright": "#f8f9ff",
-                        "on-secondary": "#ffffff",
-                        "outline": "#717783",
-                        "secondary-fixed-dim": "#ffb955",
-                        "on-surface": "#191c21",
-                        "tertiary": "#386800",
-                        "on-surface-variant": "#414751",
-                        "on-error-container": "#93000a",
-                        "secondary": "#835500",
-                        "primary-container": "#2976c7",
-                        "tertiary-container": "#498300",
-                        "on-background": "#191c21",
-                        "primary-fixed": "#d4e3ff",
-                        "tertiary-fixed-dim": "#87dc2c",
-                        "surface-tint": "#0060ac",
-                        "on-secondary-fixed": "#291800",
-                        "surface-container-high": "#e6e8ef",
-                        "surface-variant": "#e1e2e9",
-                        "error": "#ba1a1a",
-                        "secondary-fixed": "#ffddb4",
-                        "on-tertiary-container": "#f9ffeb"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                    "spacing": {
-                        "touch-target-min": "48px",
-                        "base": "8px",
-                        "margin-mobile": "16px",
-                        "margin-desktop": "40px",
-                        "gutter": "24px"
-                    },
-                    "fontFamily": {
-                        "body-lg": ["Quicksand"],
-                        "headline-md": ["Quicksand"],
-                        "display-lg-mobile": ["Quicksand"],
-                        "body-sm": ["Quicksand"],
-                        "label-caps": ["Quicksand"],
-                        "display-lg": ["Quicksand"]
-                    },
-                    "fontSize": {
-                        "body-lg": ["20px", {"lineHeight": "30px", "fontWeight": "500"}],
-                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
-                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
-                        "body-sm": ["16px", {"lineHeight": "24px", "fontWeight": "500"}],
-                        "label-caps": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "700"}],
-                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
-                    }
-                },
-            },
-        }
-    </script>
+  body {
+    background: #0d1b14;
+    display: flex;
+    justify-content: center;
+    padding: 40px 0;
+    margin: 0;
+  }
+
+  .tree-character {
+    position: relative;
+    width: 320px;
+    height: 694px;
+    background-image: url('tree.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  /* עיניים - ממוקמות בדיוק על שתיים מהנקודות הזוהרות הקיימות בתמונה,
+     כך שהן נראות כמו חלק טבעי מהעץ ולא תוספת מלאכותית */
+  .eye {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #E1F5EE 0%, #5DCAA5 50%, transparent 100%);
+    box-shadow: 0 0 18px 6px rgba(93, 202, 165, 0.6);
+    transform: translate(-50%, -50%);
+    transition: transform 0.2s ease;
+  }
+
+  .eye-left {
+    top: 37%;
+    left: 54%;
+  }
+
+  .eye-right {
+    top: 43%;
+    left: 79%;
+  }
+
+  /* אנימציית מצמוץ עדינה */
+  @keyframes blink {
+    0%, 92%, 100% { transform: scaleY(1); }
+    95% { transform: scaleY(0.1); }
+  }
+
+  .eye {
+    animation: blink 5s infinite;
+  }
+
+  /* פה - מסגרת חריץ זוהרת לגרירת תשובה */
+  .mouth-slot {
+    position: absolute;
+    top: 50%;
+    left: 65%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 60px;
+    border-radius: 18px;
+    border: 2px dashed #FAC775;
+    background: rgba(26, 16, 51, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 20px 6px rgba(250, 199, 117, 0.25) inset;
+  }
+
+  .mouth-slot.drag-over {
+    border-style: solid;
+    box-shadow: 0 0 26px 10px rgba(250, 199, 117, 0.5) inset;
+  }
+
+  .mouth-slot .placeholder-glow {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(250,199,117,0.9) 0%, transparent 70%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FAC775;
+    font-size: 22px;
+    font-weight: 500;
+    font-family: sans-serif;
+  }
+
+  .mouth-slot.correct {
+    animation: correctPulse 0.6s ease;
+  }
+
+  @keyframes correctPulse {
+    0% { box-shadow: 0 0 20px 6px rgba(250, 199, 117, 0.25) inset; }
+    50% { box-shadow: 0 0 40px 16px rgba(93, 202, 165, 0.8) inset; }
+    100% { box-shadow: 0 0 20px 6px rgba(250, 199, 117, 0.25) inset; }
+  }
+</style>
 </head>
-<body class="bg-background text-on-surface">
-<!-- Top App Bar -->
-<header class="fixed top-0 w-full z-50 bg-surface flex items-center justify-between px-4 h-16 border-b-4 border-primary/10">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-primary" data-icon="auto_awesome">auto_awesome</span>
-<h1 class="font-headline-md text-headline-md-mobile font-bold text-primary">Magic Connecting Words</h1>
+<body>
+
+<div class="tree-character" id="treeCharacter">
+  <div class="eye eye-left"></div>
+  <div class="eye eye-right"></div>
+  <div class="mouth-slot" id="mouthSlot">
+    <div class="placeholder-glow">?</div>
+  </div>
 </div>
-<div class="flex items-center">
-<button class="p-2 hover:bg-surface-container-high transition-colors rounded-full">
-<span class="material-symbols-outlined text-primary" data-icon="account_circle">account_circle</span>
-</button>
-</div>
-</header>
-<main class="pt-20 pb-32">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<!-- Page Hero -->
-<div class="text-center py-12">
-<h2 class="font-display-lg-mobile md:text-display-lg text-primary mb-4">מרכז ההורדות המלא - כל 214 האיורים</h2>
-<p class="font-body-lg text-on-surface-variant max-w-2xl mx-auto">
-                    כל איורי ה-3D המרהיבים של פרויקט "תירגולון" זמינים כאן להורדה מסודרים לפי ה-א' ב'.
-                </p>
-</div>
-<!-- Sticky Alphabet Navigation -->
-<nav class="sticky top-16 z-40 bg-surface-container-low/95 backdrop-blur-md py-4 mb-12 rounded-xl overflow-hidden alphabet-sticky">
-<div class="flex overflow-x-auto no-scrollbar px-4 gap-2 md:justify-center">
-<!-- Hebrew Alphabet items -->
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-primary text-on-primary font-bold hover:scale-105 transition-transform" href="#aleph">א</a>
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-surface-container-highest hover:bg-primary-container hover:text-on-primary-container transition-all" href="#bet">ב</a>
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-surface-container-highest hover:bg-primary-container hover:text-on-primary-container transition-all" href="#gimel">ג</a>
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-surface-container-highest hover:bg-primary-container hover:text-on-primary-container transition-all" href="#dalet">ד</a>
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-surface-container-highest hover:bg-primary-container hover:text-on-primary-container transition-all" href="#he">ה</a>
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-surface-container-highest hover:bg-primary-container hover:text-on-primary-container transition-all" href="#vav">ו</a>
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-surface-container-highest hover:bg-primary-container hover:text-on-primary-container transition-all" href="#zayin">ז</a>
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-surface-container-highest hover:bg-primary-container hover:text-on-primary-container transition-all" href="#het">ח</a>
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-surface-container-highest hover:bg-primary-container hover:text-on-primary-container transition-all" href="#tet">ט</a>
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-surface-container-highest hover:bg-primary-container hover:text-on-primary-container transition-all" href="#yod">י</a>
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-surface-container-highest hover:bg-primary-container hover:text-on-primary-container transition-all" href="#kaf">כ</a>
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-surface-container-highest hover:bg-primary-container hover:text-on-primary-container transition-all" href="#lamed">ל</a>
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-surface-container-highest hover:bg-primary-container hover:text-on-primary-container transition-all" href="#mem">מ</a>
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-surface-container-highest hover:bg-primary-container hover:text-on-primary-container transition-all" href="#nun">נ</a>
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-surface-container-highest hover:bg-primary-container hover:text-on-primary-container transition-all" href="#samekh">ס</a>
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-surface-container-highest hover:bg-primary-container hover:text-on-primary-container transition-all" href="#ayin">ע</a>
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-surface-container-highest hover:bg-primary-container hover:text-on-primary-container transition-all" href="#pe">פ</a>
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-surface-container-highest hover:bg-primary-container hover:text-on-primary-container transition-all" href="#tsadi">צ</a>
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-surface-container-highest hover:bg-primary-container hover:text-on-primary-container transition-all" href="#kof">ק</a>
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-surface-container-highest hover:bg-primary-container hover:text-on-primary-container transition-all" href="#resh">ר</a>
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-surface-container-highest hover:bg-primary-container hover:text-on-primary-container transition-all" href="#shin">ש</a>
-<a class="min-w-[40px] h-10 flex items-center justify-center rounded-lg bg-surface-container-highest hover:bg-primary-container hover:text-on-primary-container transition-all" href="#tav">ת</a>
-</div>
-</nav>
-<!-- Cards Grid -->
-<div class="space-y-16">
-<!-- Section Aleph -->
-<section id="aleph">
-<div class="flex items-center gap-4 mb-8">
-<div class="w-12 h-12 bg-primary-fixed text-primary flex items-center justify-center rounded-full font-bold text-2xl">א</div>
-<h3 class="font-headline-md text-on-surface">אות אלף</h3>
-</div>
-<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-<!-- אבא -->
-<div class="group bg-surface-container-lowest p-4 rounded-xl border-2 border-primary/5 hover:border-primary/20 transition-all shadow-sm flex flex-col items-center">
-<div class="relative w-full aspect-square mb-4 rounded-lg overflow-hidden bg-surface-container-low">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-quality 3D digital illustration for children. A friendly father (Abba) with warm features sitting on a soft grey sofa in a cozy, sunlit living room. He is reading a colorful storybook with gentle expressions. The style is modern, playful 3D with soft lighting and rounded shapes, creating a sense of safety and family warmth. Consistent with a clean educational app aesthetic." src="https://lh3.googleusercontent.com/aida/AP1WRLtlGNfSrhsMk82TtABjMNOwvSXjz3nz6qXP9FEdF8F77zlCZ77ZlOh6frg799MPfMsMWBAMilCDtLR-bsVzARZE9pVk7eq3aRPJD9qB9B1o-JMyK5mms71hzS_jlQ1_7n9RDps0svfFOgfXSfo7kpBX-ACMtrUJ8S4OAcb7wMCtiQrjcRy6ib_7X6nMSMnYBSX9NG4qqbnI0VFtLEn2hxJTueJZ8FJJsvuyjGoqStIYFGdhZDb6E_u81GE"/>
-</div>
-<span class="font-headline-md text-primary mb-4">אבא</span>
-<button class="btn-3d w-full h-touch-target-min bg-primary text-on-primary rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary-container transition-colors" onclick="downloadImage('https://lh3.googleusercontent.com/aida/AP1WRLtlGNfSrhsMk82TtABjMNOwvSXjz3nz6qXP9FEdF8F77zlCZ77ZlOh6frg799MPfMsMWBAMilCDtLR-bsVzARZE9pVk7eq3aRPJD9qB9B1o-JMyK5mms71hzS_jlQ1_7n9RDps0svfFOgfXSfo7kpBX-ACMtrUJ8S4OAcb7wMCtiQrjcRy6ib_7X6nMSMnYBSX9NG4qqbnI0VFtLEn2hxJTueJZ8FJJsvuyjGoqStIYFGdhZDb6E_u81GE', 'abba')">
-<span class="material-symbols-outlined" data-icon="download">download</span>
-<span>הורדה</span>
-</button>
-</div>
-<!-- אמא -->
-<div class="group bg-surface-container-lowest p-4 rounded-xl border-2 border-primary/5 hover:border-primary/20 transition-all shadow-sm flex flex-col items-center">
-<div class="relative w-full aspect-square mb-4 rounded-lg overflow-hidden bg-surface-container-low">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-quality 3D digital illustration for children. A kind and smiling mother (Ima) with soft facial features and friendly eyes. She is depicted in a brightly lit, modern kitchen environment with a clean, pastel color palette. The 3D render is smooth and polished, emphasizing a comforting and approachable personality suitable for young learners. Flat 2D vector inspired depth." src="https://lh3.googleusercontent.com/aida/AP1WRLtjPG7LeZgi5FIWqK1BjD8yeZM1EnJUURrfk2mxMm7yE1pQOxO6Mlyqz79LLzYIyil-w1HO0Jrh88ZdfdncyzpwxANP6tKAXxCy-DxLVtRWl-CK863snrhTNHQggLTj7lYKFb1xgWtI9LxNreXkRdhZDLFaK29tMVm5QufTGYchVI4GusdAWH8uYm8-QfN6JVXnSjWxUMLNDJeZdsQyNvG0izYX0tzFUlQAlopTaPQSoTVJetZT9Iu7yw"/>
-</div>
-<span class="font-headline-md text-primary mb-4">אמא</span>
-<button class="btn-3d w-full h-touch-target-min bg-primary text-on-primary rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary-container transition-colors" onclick="downloadImage('https://lh3.googleusercontent.com/aida/AP1WRLtjPG7LeZgi5FIWqK1BjD8yeZM1EnJUURrfk2mxMm7yE1pQOxO6Mlyqz79LLzYIyil-w1HO0Jrh88ZdfdncyzpwxANP6tKAXxCy-DxLVtRWl-CK863snrhTNHQggLTj7lYKFb1xgWtI9LxNreXkRdhZDLFaK29tMVm5QufTGYchVI4GusdAWH8uYm8-QfN6JVXnSjWxUMLNDJeZdsQyNvG0izYX0tzFUlQAlopTaPQSoTVJetZT9Iu7yw', 'ima')">
-<span class="material-symbols-outlined" data-icon="download">download</span>
-<span>הורדה</span>
-</button>
-</div>
-<!-- אור -->
-<div class="group bg-surface-container-lowest p-4 rounded-xl border-2 border-primary/5 hover:border-primary/20 transition-all shadow-sm flex flex-col items-center">
-<div class="relative w-full aspect-square mb-4 rounded-lg overflow-hidden bg-surface-container-low">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-quality 3D digital illustration for children. A bright and friendly yellow light (Or) emanating from a cute, stylized sun lamp. The light is soft and warm, casting a gentle glow across a clean indoor nursery setting with pastel walls. The 3D textures are smooth, and the overall mood is optimistic and clear, focusing on the concept of light in a playful way." src="https://lh3.googleusercontent.com/aida/AP1WRLuMkl5wyd50SAfsUuC5TZzm_KrHnmmI9Y6c2S_CDIYQWo_qxrm9oPyr_NWWWf4BGXpvUCpcX_8izGtlJgs6O3Xh1umjpZIFe9X7D593WocBH01gaM3Degz67N9WwbFHawYEji4B3HDAAF-ryRCssJxCs07yk_3RUJ-nBeDRGMm4gdBp0PzerNfDDeRJOPF84yAZqiXVE5OoO_EL913ro6A91bTNzP_AyX5cCVUgHHXDavnioF76bBI5FS8"/>
-</div>
-<span class="font-headline-md text-primary mb-4">אור</span>
-<button class="btn-3d w-full h-touch-target-min bg-primary text-on-primary rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary-container transition-colors">
-<span class="material-symbols-outlined" data-icon="download">download</span>
-<span>הורדה</span>
-</button>
-</div>
-<!-- אוזן -->
-<div class="group bg-surface-container-lowest p-4 rounded-xl border-2 border-primary/5 hover:border-primary/20 transition-all shadow-sm flex flex-col items-center">
-<div class="relative w-full aspect-square mb-4 rounded-lg overflow-hidden bg-surface-container-low">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-quality 3D digital illustration for children. A close-up view of a child's ear (Ozen) rendered with soft, clean textures. The setting is a cozy, brightly lit bedroom with subtle toy shapes in the soft-focus background. The illustration is designed to be highly legible and focused, removing distractions like earrings or hair to emphasize the anatomical feature in a friendly manner." src="https://lh3.googleusercontent.com/aida/AP1WRLvQ8YXyb5Bm_atgAtsQ9QxOno1e3xLm84EGD3EuyfGdY4JK3IBJeTNlTE1lEWEzhiXBr6TXQ7okXFBL3HCSUFMYYkSheNx29DiHi-Ld9ciEVqc4_U0H74ck5Y6ftOtXb02D_Yh53LZPaoFfhlbuAr_jU8XGi9IoieG5_Nu2pB6nBKqVuUps_Pcdz8hXeXAV9C0tFbw_D9DMSO5aK8FFbTHN8zHrLIjAiB3LWI6F5Qkqf3meaLiUCGTpgTM"/>
-</div>
-<span class="font-headline-md text-primary mb-4">אוזן</span>
-<button class="btn-3d w-full h-touch-target-min bg-primary text-on-primary rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary-container transition-colors">
-<span class="material-symbols-outlined" data-icon="download">download</span>
-<span>הורדה</span>
-</button>
-</div>
-<!-- אופניים -->
-<div class="group bg-surface-container-lowest p-4 rounded-xl border-2 border-primary/5 hover:border-primary/20 transition-all shadow-sm flex flex-col items-center">
-<div class="relative w-full aspect-square mb-4 rounded-lg overflow-hidden bg-surface-container-low">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-quality 3D digital illustration for children. A vibrant blue bicycle (Ofanayim) parked in a sunny, green park with a bright blue sky. The 3D model is clean and stylized with chunky, safe-looking tires and a shiny frame. The lighting is high-key and cheerful, capturing the spirit of outdoor play and discovery in a modern, 3D animated style." src="https://lh3.googleusercontent.com/aida/AP1WRLvcPJtWCofjG17_b_lFrOf6NsDKXuaqbrtvrxvdPUcjPr8t92gJBIRueDuSLpPnEEi1sW3qa_YeHm94hpTX31_wowWtiyYB3KBb7FXJmwndFAptCC7pVas0UNWZNr-afOngSHakYT64oKEQql-JdV-pd5ycTpgCAa-G4VfMGWgAjpGnWg4n_cxBiuAVrtCaT9OPExQSq7qokLUt6vCBpFlSB3t10vlEYpW0pEhcNwc3aPV0h-ckC4l30Ug"/>
-</div>
-<span class="font-headline-md text-primary mb-4">אופניים</span>
-<button class="btn-3d w-full h-touch-target-min bg-primary text-on-primary rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary-container transition-colors">
-<span class="material-symbols-outlined" data-icon="download">download</span>
-<span>הורדה</span>
-</button>
-</div>
-<!-- אוכל -->
-<div class="group bg-surface-container-lowest p-4 rounded-xl border-2 border-primary/5 hover:border-primary/20 transition-all shadow-sm flex flex-col items-center">
-<div class="relative w-full aspect-square mb-4 rounded-lg overflow-hidden bg-surface-container-low">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-quality 3D digital illustration for children. A delicious-looking bowl of steaming orange soup alongside a piece of crusty bread (Ochel). The scene is set on a cozy wooden dining table with a warm, soft-focus background. The textures are appetizing and smooth, rendered with vibrant colors to attract interest and represent healthy eating in a playful way." src="https://lh3.googleusercontent.com/aida/AP1WRLvkYeSiLEZ2sHDclSKbxgxmfncL1qF5lFxr-QuM0g-Cax4J74Gy6sOA6777SDeOdqrI-GHZPao3LN643CSW0H609lH4DaNEXGx4w-CtfZhZ4qQ6BDoz5j6UFtPBadJ8zNYrY4CDeyPy-On46k3DzeThLITKub31BYpDTkJe4bu8fsaFIR3ECVLU_rTPA72dum53IRmcmdMh-BI1EZJScr8wYtFcXgXYMoh2_Lhg5v0F0sxIuu-uxnNU0wo"/>
-</div>
-<span class="font-headline-md text-primary mb-4">אוכל</span>
-<button class="btn-3d w-full h-touch-target-min bg-primary text-on-primary rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary-container transition-colors">
-<span class="material-symbols-outlined" data-icon="download">download</span>
-<span>הורדה</span>
-</button>
-</div>
-</div>
-</section>
-<!-- Section Bet -->
-<section id="bet">
-<div class="flex items-center gap-4 mb-8">
-<div class="w-12 h-12 bg-secondary-fixed text-secondary flex items-center justify-center rounded-full font-bold text-2xl">ב</div>
-<h3 class="font-headline-md text-on-surface">אות בית</h3>
-</div>
-<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-<!-- בלון -->
-<div class="group bg-surface-container-lowest p-4 rounded-xl border-2 border-primary/5 hover:border-primary/20 transition-all shadow-sm flex flex-col items-center">
-<div class="relative w-full aspect-square mb-4 rounded-lg overflow-hidden bg-surface-container-low">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-quality 3D digital illustration for children. A bright, shiny red balloon (Balon) floating gracefully in the center of the frame against a backdrop of soft white clouds and a pale blue sky. The balloon has a simple white string and realistic reflections. The aesthetic is clean, energetic, and perfectly suited for an educational interactive gallery for kids." src="https://lh3.googleusercontent.com/aida/AP1WRLvj697IdrF283JBUbATifOTqXrIftbRRIM3Td1KKF025XsIQk9UG1UFdSD_8ZM5KQeQE1sarCbCwwSwmin2Wd3cmPCST0VZPC9Y0yJTVvfMY6rberUe0SGxVmCqTJUK_-OJejAZK8myCQcZFVzT7uiLPOCwmcbblnFxs9S2H8zrwOHmdQo-jxCXpdE_LtEU8nJbYUEQT2f7iV9AP3xGsh1M9lsCFBtrNPoJkBmWFyVxPB0hMD-YCD4_gA"/>
-</div>
-<span class="font-headline-md text-primary mb-4">בלון</span>
-<button class="btn-3d w-full h-touch-target-min bg-primary text-on-primary rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary-container transition-colors">
-<span class="material-symbols-outlined" data-icon="download">download</span>
-<span>הורדה</span>
-</button>
-</div>
-<!-- בקבוק -->
-<div class="group bg-surface-container-lowest p-4 rounded-xl border-2 border-primary/5 hover:border-primary/20 transition-all shadow-sm flex flex-col items-center">
-<div class="relative w-full aspect-square mb-4 rounded-lg overflow-hidden bg-surface-container-low">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-quality 3D digital illustration for children. A baby's milk bottle (Bakbuk) with a colorful blue cap, standing on a clean wooden nursery dresser. The material of the bottle is translucent and reflects soft light. The background is slightly out of focus, showing a warm and safe home environment. The 3D render is high-fidelity and crisp with soft pastel highlights." src="https://lh3.googleusercontent.com/aida/AP1WRLuj3Nk4LsZ-BaG3TT-nR0rwkVfLPOZukGslN5-b-kqPHkzd8ViOHbceCrKtdGZhLgFBPB6mCGanJx78JoeS0mie3Z4ucH6UQMHDru3fA9vDhJ1rNz0VY8EKEFu83GU7iWoKyGmfaMsmOCD-GAZGpV9e57f3xEqVpT3Al0JeIk9GlpVU3QUqkW_ryOrOZ5Ql4Lo9YD9o29bU3EcxdwHW5ZoOFACqoWY_MYvahSes9XlLHWckdRsR022wZao"/>
-</div>
-<span class="font-headline-md text-primary mb-4">בקבוק</span>
-<button class="btn-3d w-full h-touch-target-min bg-primary text-on-primary rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary-container transition-colors">
-<span class="material-symbols-outlined" data-icon="download">download</span>
-<span>הורדה</span>
-</button>
-</div>
-<!-- בטן -->
-<div class="group bg-surface-container-lowest p-4 rounded-xl border-2 border-primary/5 hover:border-primary/20 transition-all shadow-sm flex flex-col items-center">
-<div class="relative w-full aspect-square mb-4 rounded-lg overflow-hidden bg-surface-container-low">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-quality 3D digital illustration for children. A close-up of a cute, round child's tummy (Beten). The child is wearing a soft yellow t-shirt that is slightly lifted to reveal the belly. The skin is rendered with smooth, soft 3D textures. The background is a clean and warm nursery, maintaining a respectful and educational tone consistent with the modern-playful style of the app." src="https://lh3.googleusercontent.com/aida/AP1WRLsyOAR9xt6EyzbmdrWXNGlvMaOO2qkxQQfzk9iq55ycg7eNEKHQHMUPqzUHwGvvudtU0WqbWFe8QtQrH6lYOU2CEeK_tHFH8tQ8pR_UfJHfn4wFskdIKAtJqi3fDZM9wlSUTTZNA708LqN5cHtwwWLfqs69b4WzjHOJX5TeV-LQ6uzfgMpvxlNWFS-3FeZPLpSvQbLLVfjOdHrePoKYfUViH6H3k5qEZnx-3jUKsaed9XVSm0CuQkiItw"/>
-</div>
-<span class="font-headline-md text-primary mb-4">בטן</span>
-<button class="btn-3d w-full h-touch-target-min bg-primary text-on-primary rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary-container transition-colors">
-<span class="material-symbols-outlined" data-icon="download">download</span>
-<span>הורדה</span>
-</button>
-</div>
-<!-- ברכה -->
-<div class="group bg-surface-container-lowest p-4 rounded-xl border-2 border-primary/5 hover:border-primary/20 transition-all shadow-sm flex flex-col items-center">
-<div class="relative w-full aspect-square mb-4 rounded-lg overflow-hidden bg-surface-container-low">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-quality 3D digital illustration for children. A beautiful, sparkling blue swimming pool (Berecha) under a bright sun. A few colorful inflatable toys like a yellow ring float in the water. The surrounding area is clean and sunny, with stylized green trees in the background. The 3D render is vibrant and inviting, emphasizing a fun and active outdoor lifestyle for kids." src="https://lh3.googleusercontent.com/aida/AP1WRLvCU-YiLWzptynjXPHaDBUUBIQz-QN3ZP5_qL79tNCbudro1H4oQBEZGg7kcBSSyFgyL6NYiVnEDSvaba7ytxYapAJAD64Y-KLpG3ltXh3Ey2ksefUd3CwEpNHSTOJWrUBraHy1PQeLdjsYjhh4W89c3nwI2BPJoNoAavVSgLqRKrOeIfl5NIvHRfHFvzp23symDWGO48iWfes7pJvg5RP31cwLKFho0NxsZ4RAjj85xBDLoa12hNF58hg"/>
-</div>
-<span class="font-headline-md text-primary mb-4">בריכה</span>
-<button class="btn-3d w-full h-touch-target-min bg-primary text-on-primary rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary-container transition-colors">
-<span class="material-symbols-outlined" data-icon="download">download</span>
-<span>הורדה</span>
-</button>
-</div>
-<!-- בוקר -->
-<div class="group bg-surface-container-lowest p-4 rounded-xl border-2 border-primary/5 hover:border-primary/20 transition-all shadow-sm flex flex-col items-center">
-<div class="relative w-full aspect-square mb-4 rounded-lg overflow-hidden bg-surface-container-low">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-quality 3D digital illustration for children. A beautiful sunrise (Boker) over a friendly neighborhood with colorful houses and stylized green trees. The morning light is warm and soft, casting long gentle shadows. The sky is a mix of pale orange and soft blue. The overall 3D aesthetic is clean and serene, representing the beginning of a brand new day with hope and energy." src="https://lh3.googleusercontent.com/aida/AP1WRLu1af2r_l5Ugm0BYqrlPZpVaA07WmBioPm5awiXwtz0dTlGiuN_JuMZLNzrc2MwYEVRsa_VAsQWBaApD6yz-vCDmpSNVkfpBllW0eBfOEyLmFVFWQgVSFSsBV3klxoj7FBBcH2pksKT1MymKt64_ovN-lydrFgh8_YcjPD96092HyK4yGLIu4P7Xeu6_1T83i3mfU-6WMtm0gC1IeXsOwbKz7O-YQEFUKaVABcJVMQHPSNgDndbLQog3RM"/>
-</div>
-<span class="font-headline-md text-primary mb-4">בוקר</span>
-<button class="btn-3d w-full h-touch-target-min bg-primary text-on-primary rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary-container transition-colors">
-<span class="material-symbols-outlined" data-icon="download">download</span>
-<span>הורדה</span>
-</button>
-</div>
-<!-- בוץ -->
-<div class="group bg-surface-container-lowest p-4 rounded-xl border-2 border-primary/5 hover:border-primary/20 transition-all shadow-sm flex flex-col items-center">
-<div class="relative w-full aspect-square mb-4 rounded-lg overflow-hidden bg-surface-container-low">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-quality 3D digital illustration for children. A small, shiny brown mud puddle (Botz) on a stylized garden path made of flat stones. Tiny green grass blades peek out from the edges. The 3D textures are realistic yet playful, with bright sunlight reflecting off the wet surface of the mud. This image represents nature and sensory play in a clean, educational visual style." src="https://lh3.googleusercontent.com/aida/AP1WRLvtVdi7hMyLXvS463xvAF2DwpU_ilVJTWPvyhWWc9Cm0eS3no7cb4z3Yxy8kbs7TaFO8Iu1pnPBgrjz2KHRnol_-kFF840Ku_dWwRDjbxWS-2-X2ovheoCGSueOCGK2mGgD9JD0oeJYPKFDt3z7n04Cw2d9QNrhVbr-y2BSYsRwXMU__7O7DmB5t8-7XCoN0-dZ5ajkpAFFjrrYTuoSZrkZntJhhsrmXTnryX_3jODlEs60k4h7qjFdZQ"/>
-</div>
-<span class="font-headline-md text-primary mb-4">בוץ</span>
-<button class="btn-3d w-full h-touch-target-min bg-primary text-on-primary rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary-container transition-colors">
-<span class="material-symbols-outlined" data-icon="download">download</span>
-<span>הורדה</span>
-</button>
-</div>
-</div>
-</section>
-<!-- Section Gimmel, Dalet, etc (Representative sections as requested to cover "and all others") -->
-<section id="other-letters">
-<div class="flex items-center gap-4 mb-8">
-<div class="w-12 h-12 bg-tertiary-fixed text-tertiary flex items-center justify-center rounded-full font-bold text-2xl">...</div>
-<h3 class="font-headline-md text-on-surface">עוד איורים נבחרים</h3>
-</div>
-<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-<!-- היפופוטם -->
-<div class="group bg-surface-container-lowest p-4 rounded-xl border-2 border-primary/5 hover:border-primary/20 transition-all shadow-sm flex flex-col items-center">
-<div class="relative w-full aspect-square mb-4 rounded-lg overflow-hidden bg-surface-container-low">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-quality 3D digital illustration for children. A friendly, purple hippopotamus (Hipopotam) with a happy expression standing by a soft blue pond in a sunny savanna. The character design is rounded and cute, with smooth 3D textures. The lighting is bright and cheerful, consistent with the playful educational theme of the project. Clear and high-fidelity render." src="https://lh3.googleusercontent.com/aida/AP1WRLtMg3D7as6fu_yzwoUO2ttXpj3JpgXfkml6FVTL5vD487n-des7u4GotO1E918rrnJaYo5hKQP9MxowCEqVjFhorwZORWtQ7KMgy-EimHz5265jdwGPyOE5-m21tMvIka0tho01as3uqq8YPosoJlII3C9_hs01yfQEX-mYXBHGpng2g5nVddcTEg_NA6meN0sel7HcCSqMWCdkBXQ6NkzvG_GtQuxLa4Ho3rukzpBzZ9hEDlzwb6Jfo5c"/>
-</div>
-<span class="font-headline-md text-primary mb-4">היפופוטם</span>
-<button class="btn-3d w-full h-touch-target-min bg-primary text-on-primary rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary-container transition-colors">
-<span class="material-symbols-outlined" data-icon="download">download</span>
-<span>הורדה</span>
-</button>
-</div>
-<!-- זריחה -->
-<div class="group bg-surface-container-lowest p-4 rounded-xl border-2 border-primary/5 hover:border-primary/20 transition-all shadow-sm flex flex-col items-center">
-<div class="relative w-full aspect-square mb-4 rounded-lg overflow-hidden bg-surface-container-low">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-quality 3D digital illustration for children. A beautiful golden sunrise (Zricha) over a friendly, stylized neighborhood with colorful roofs and soft trees. Warm orange and yellow light beams illuminate the scene, creating a magical morning atmosphere. The 3D style is clean and polished, perfect for illustrating time concepts to young learners in an engaging way." src="https://lh3.googleusercontent.com/aida/AP1WRLsoa9k0BOJr2t-zMiVxOj7-2Q9wn7ZdOvnDK7b5g4ErT5y4TSDHAEWUt1Oi1XRiHycTllsdLIlHhC_XxVD4HLWNUgCTURRSSI9yvxlrsH7-GNMytV9BFz6V0fmWC1pMO2l39e6Etsdl-9HU8QKkumsKbSONSbYeVL20A-Jxurlv46pxlDQY8x8cqxf8_uSltdw8B8Qtui_vVMYrALR1puHWbMGM1ZrtaLNYc57t8vQ7DsKvEM6V9V6LRw8"/>
-</div>
-<span class="font-headline-md text-primary mb-4">זריחה</span>
-<button class="btn-3d w-full h-touch-target-min bg-primary text-on-primary rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary-container transition-colors">
-<span class="material-symbols-outlined" data-icon="download">download</span>
-<span>הורדה</span>
-</button>
-</div>
-<!-- נייר -->
-<div class="group bg-surface-container-lowest p-4 rounded-xl border-2 border-primary/5 hover:border-primary/20 transition-all shadow-sm flex flex-col items-center">
-<div class="relative w-full aspect-square mb-4 rounded-lg overflow-hidden bg-surface-container-low">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-quality 3D digital illustration for children. A crisp, single sheet of white paper (Niyar) lying neatly on a warm-toned wooden desk. The paper has subtle shadows indicating its thinness. The lighting is natural and bright, from an unseen window. The render is clean and minimalist, focusing on the simple object in a way that is clear and easy for a child to identify." src="https://lh3.googleusercontent.com/aida/AP1WRLukzOvFyUKqcZ_3-VQkOfQsyYPXvWotbbmjM686BCbSeO4gQKz5Ml2PjXFigZIzz7tpoTdDhhwhHRWohXHqOn6vTfOaDXKhtlTjSjrjBXX_Y_4ydBCKiCm4fA5F9WKJeCjiFBuu5b1fOKpr2yTubCGMkoUEa8VDfuKTArFNbstKTsd3hY_08uF_1xZ_jzc3e3W1-J0l6p1Ry-dH0rm4QlQ9AQYnFsKWgMKoUA_Avjh68ZHku_N-qW6b3w"/>
-</div>
-<span class="font-headline-md text-primary mb-4">נייר</span>
-<button class="btn-3d w-full h-touch-target-min bg-primary text-on-primary rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary-container transition-colors">
-<span class="material-symbols-outlined" data-icon="download">download</span>
-<span>הורדה</span>
-</button>
-</div>
-<!-- טווס -->
-<div class="group bg-surface-container-lowest p-4 rounded-xl border-2 border-primary/5 hover:border-primary/20 transition-all shadow-sm flex flex-col items-center">
-<div class="relative w-full aspect-square mb-4 rounded-lg overflow-hidden bg-surface-container-low">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-quality 3D digital illustration for children. A beautiful, proud peacock (Tavas) with its magnificent teal and green tail feathers spread out in a full fan. The setting is a sunny park with soft grass. The peacock has a friendly character design with large eyes. The textures of the feathers are rendered with detail and vibrant colors, making it a standout educational asset." src="https://lh3.googleusercontent.com/aida/AP1WRLuJgNJp_Zz2F2pXJJNoo2s08AXLWu9ucw45uERAi0BP3sVc5yghOienSb5n1hWynh8LXf0QWVYLnPfk0ufgJ6hIKpj1_hPiLCynTfGUVKGsPVZQCcw3UDOzes0OvSAZ8iWMG9PTPvq2v4Qq36pd7cpxbQsMdv6ve7SPg7LqgFd9bTtjWNf6d3yS2Xv8VXLxVWmN58i7KmRi6ACQsUaD2nqCFXz4XsfcfNhXpH9Czn7hWwKVTWJ4HUrHYmE"/>
-</div>
-<span class="font-headline-md text-primary mb-4">טווס</span>
-<button class="btn-3d w-full h-touch-target-min bg-primary text-on-primary rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary-container transition-colors">
-<span class="material-symbols-outlined" data-icon="download">download</span>
-<span>הורדה</span>
-</button>
-</div>
-</div>
-</section>
-</div>
-</div>
-</main>
-<!-- Footer with Stats/Info -->
-<footer class="bg-surface-container-low py-8 px-4 text-center border-t-2 border-dashed border-outline-variant mb-20">
-<h4 class="font-headline-md text-secondary mb-2">Tirgulon Downloads</h4>
-<p class="font-body-sm text-on-surface-variant max-w-md mx-auto">Keep exploring the magic of words! You're doing great!</p>
-<div class="flex justify-center gap-4 mt-4">
-<a class="text-on-surface-variant hover:text-primary font-body-sm" href="#">Privacy Policy</a>
-<span class="text-outline-variant">|</span>
-<a class="text-on-surface-variant hover:text-primary font-body-sm" href="#">Help Center</a>
-</div>
-</footer>
-<!-- Bottom Nav Bar -->
-<nav class="fixed bottom-0 w-full z-50 bg-surface-container-lowest flex justify-around items-center px-4 py-2 border-t-4 border-surface-variant rounded-t-xl">
-<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-surface-container-high transition-all rounded-xl active:scale-95" href="#">
-<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
-<span class="font-label-caps text-label-caps">Causes First</span>
-</a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-surface-container-high transition-all rounded-xl active:scale-95" href="#">
-<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
-<span class="font-label-caps text-label-caps">Effects First</span>
-</a>
-<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl p-2 scale-105 shadow-sm active:scale-95 transition-all" href="#">
-<span class="material-symbols-outlined" data-icon="vpn_key">vpn_key</span>
-<span class="font-label-caps text-label-caps">Key Words</span>
-</a>
-</nav>
+
 <script>
-        // Simple function to simulate download behavior
-        function downloadImage(imageUrl, fileName) {
-            // In a real browser environment, this would trigger a download
-            const link = document.createElement('a');
-            link.href = imageUrl;
-            link.download = `tirgulon_${fileName}.png`;
-            console.log(`Downloading: ${fileName} from ${imageUrl}`);
-            
-            // Show a temporary "Success" feedback on the button
-            const btn = event.currentTarget;
-            const originalContent = btn.innerHTML;
-            btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span><span>הורד בהצלחה!</span>';
-            btn.classList.replace('bg-primary', 'bg-tertiary-container');
-            btn.classList.replace('text-on-primary', 'text-on-tertiary-container');
-            
-            setTimeout(() => {
-                btn.innerHTML = originalContent;
-                btn.classList.replace('bg-tertiary-container', 'bg-primary');
-                btn.classList.replace('text-on-tertiary-container', 'text-on-primary');
-            }, 2000);
-        }
+  // דוגמה לבדיקת drag-over (מתחבר לאותה לוגיקה שכבר יש לך לגרירת מילים)
+  const slot = document.getElementById('mouthSlot');
 
-        // Logic to highlight active letter in sticky bar
-        window.addEventListener('scroll', () => {
-            const sections = document.querySelectorAll('section');
-            const navLinks = document.querySelectorAll('.alphabet-sticky a');
-            const stickyBar = document.querySelector('.alphabet-sticky');
-            
-            // Toggle shadow on scroll
-            if (window.scrollY > 100) {
-                stickyBar.classList.add('is-pinned');
-            } else {
-                stickyBar.classList.remove('is-pinned');
-            }
+  slot.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    slot.classList.add('drag-over');
+  });
 
-            let current = "";
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (window.pageYOffset >= sectionTop - 150) {
-                    current = section.getAttribute('id');
-                }
-            });
+  slot.addEventListener('dragleave', () => {
+    slot.classList.remove('drag-over');
+  });
 
-            navLinks.forEach(link => {
-                link.classList.remove('bg-primary', 'text-on-primary', 'scale-105');
-                link.classList.add('bg-surface-container-highest');
-                if (link.getAttribute('href').substring(1) === current) {
-                    link.classList.remove('bg-surface-container-highest');
-                    link.classList.add('bg-primary', 'text-on-primary', 'scale-105');
-                }
-            });
-        });
-    </script>
-</body></html>
+  slot.addEventListener('drop', (e) => {
+    e.preventDefault();
+    slot.classList.remove('drag-over');
+    slot.classList.add('correct');
+    setTimeout(() => slot.classList.remove('correct'), 600);
+  });
+</script>
+
+</body>
+</html>
