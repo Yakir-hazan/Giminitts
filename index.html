@@ -46,7 +46,7 @@
     width: 145px;
     height: 95px;
     border-radius: 55% 45% 50% 50% / 60% 55% 45% 40%;
-    background: radial-gradient(ellipse at center, rgba(20,12,5,0.55) 0%, rgba(20,12,5,0.35) 45%, rgba(20,12,5,0) 75%);
+    background: radial-gradient(ellipse at center, rgba(20,12,5,0.4) 0%, rgba(20,12,5,0.22) 45%, rgba(20,12,5,0) 75%);
     filter: blur(6px);
     transform: translate(-50%, -50%);
     pointer-events: none;
@@ -59,13 +59,13 @@
     height: 72px;
     border-radius: 50%;
     /* "לבן" העין - גוון שנהבי-קרמי שמתאים לתאורת היער, לא לבן נקי */
-    background: radial-gradient(ellipse at center, #F2E9D8 0%, #E4D7BE 50%, #B8A684 78%, rgba(120,100,70,0) 100%);
+    background: radial-gradient(ellipse at center, rgba(242,233,216,0.9) 0%, rgba(228,215,190,0.75) 50%, rgba(184,166,132,0.4) 78%, rgba(120,100,70,0) 100%);
     /* מסיכת דהייה - הקצוות נעלמים בהדרגה במקום קו חיתוך חד, כך שהלבן מתמזג בקליפה */
     -webkit-mask-image: radial-gradient(ellipse at center, black 45%, transparent 80%);
     mask-image: radial-gradient(ellipse at center, black 45%, transparent 80%);
-    mix-blend-mode: overlay;
+    mix-blend-mode: normal;
     box-shadow:
-      0 0 34px 12px rgba(250, 199, 117, 0.7),
+      0 0 16px 5px rgba(250, 199, 117, 0.4),
       inset 0 2px 4px rgba(0,0,0,0.35);
     overflow: hidden;
     transform: translate(-50%, -50%);
